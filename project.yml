@@ -20,7 +20,10 @@ targets:
     sources:
       - path: LittlePup
         excludes:
-          - Info.plist  # referenced via INFOPLIST_FILE; must not also land in bundle resources
+          - Info.plist          # referenced via INFOPLIST_FILE; must not also land in bundle resources
+          - Resources/Pets/**   # added separately below as a folder reference to preserve directory structure
+      - path: LittlePup/Resources/Pets
+        type: folder            # folder reference copies Pets/ as a directory; enables subdirectory: "Pets" in bundle lookups
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.littlepup.app
@@ -39,11 +42,14 @@ targets:
     deploymentTarget: "12.0"
     sources:
       - path: LittlePupTests
+      - path: LittlePup/Resources/Pets
+        type: folder            # same folder reference in the test bundle so loadDefaultProfile() can find the files
     dependencies:
       - target: LittlePup
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.littlepup.LittlePupTests
+        GENERATE_INFOPLIST_FILE: YES    # test bundles don't need a custom plist; let Xcode generate one
         CODE_SIGN_IDENTITY: "-"
         CODE_SIGN_STYLE: Manual
         CODE_SIGNING_REQUIRED: YES

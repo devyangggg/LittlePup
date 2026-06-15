@@ -7,9 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02428BC77460A7EED03FC5FA /* Pets in Resources */ = {isa = PBXBuildFile; fileRef = 5D9711C1552DB9CC97F4A096 /* Pets */; };
+		189F9EC2C52FB7606EFB0881 /* AnimationConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B92B3BB424373D17BC6A52 /* AnimationConfig.swift */; };
+		236AEDB1D69CB5C05FFB80B3 /* PetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F916D8AD8704ED3386BA10E /* PetState.swift */; };
 		2E3E2963C4CEB94E9E95FA59 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432BA10C2891DBE5BC9B169D /* AppDelegate.swift */; };
+		33A8F70788E12851B6BD751A /* PetProfileLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021AA16C18B92860058210B /* PetProfileLoader.swift */; };
+		4C9717CE5C918E5B0BA98977 /* PetProfileLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56470D1589B93A6D27E3A7EE /* PetProfileLoaderTests.swift */; };
 		58C7052C4774D30A55DA8885 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5D6A115539B36AA08B0D5F3 /* Assets.xcassets */; };
+		6D92E558CF911817C70902F0 /* PetProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 301B2E3159E2CA0EFCF291A2 /* PetProfile.swift */; };
+		7A977AB77D76E4307A837D3B /* BehaviorConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E6EC2AB4588D1B70CFA1AC /* BehaviorConfig.swift */; };
 		A069D9B0D610AEFB744F894D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C10E02E5307F60EF8F4ABF /* main.swift */; };
+		DC3633E7F972214AB58A562F /* Pets in Resources */ = {isa = PBXBuildFile; fileRef = 5D9711C1552DB9CC97F4A096 /* Pets */; };
+		DCE99B0BB8125F42B836E433 /* ProfileError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73BEF762B79AD85004D7BCA /* ProfileError.swift */; };
 		F6CB59574F1759E1D0FD6FEE /* LittlePupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF141BDD540D84B57C86069 /* LittlePupTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -25,11 +34,19 @@
 
 /* Begin PBXFileReference section */
 		0130A117AEF100A7A3C2EF1E /* LittlePupTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LittlePupTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		28B92B3BB424373D17BC6A52 /* AnimationConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationConfig.swift; sourceTree = "<group>"; };
+		301B2E3159E2CA0EFCF291A2 /* PetProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetProfile.swift; sourceTree = "<group>"; };
 		432BA10C2891DBE5BC9B169D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4BF141BDD540D84B57C86069 /* LittlePupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LittlePupTests.swift; sourceTree = "<group>"; };
+		56470D1589B93A6D27E3A7EE /* PetProfileLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetProfileLoaderTests.swift; sourceTree = "<group>"; };
+		5D9711C1552DB9CC97F4A096 /* Pets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Pets; path = LittlePup/Resources/Pets; sourceTree = SOURCE_ROOT; };
 		6F7EB72464DAA3B07B1CA150 /* LittlePup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LittlePup.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82C10E02E5307F60EF8F4ABF /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		9F916D8AD8704ED3386BA10E /* PetState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetState.swift; sourceTree = "<group>"; };
+		A1E6EC2AB4588D1B70CFA1AC /* BehaviorConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviorConfig.swift; sourceTree = "<group>"; };
+		C021AA16C18B92860058210B /* PetProfileLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetProfileLoader.swift; sourceTree = "<group>"; };
 		C5D6A115539B36AA08B0D5F3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C73BEF762B79AD85004D7BCA /* ProfileError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -37,6 +54,7 @@
 			isa = PBXGroup;
 			children = (
 				C5D6A115539B36AA08B0D5F3 /* Assets.xcassets */,
+				5D9711C1552DB9CC97F4A096 /* Pets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -68,10 +86,24 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		60BCA9AC8377B67CA3E675CA /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				28B92B3BB424373D17BC6A52 /* AnimationConfig.swift */,
+				A1E6EC2AB4588D1B70CFA1AC /* BehaviorConfig.swift */,
+				301B2E3159E2CA0EFCF291A2 /* PetProfile.swift */,
+				C021AA16C18B92860058210B /* PetProfileLoader.swift */,
+				C73BEF762B79AD85004D7BCA /* ProfileError.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		B4AB73B6EC10D3939A452442 /* LittlePup */ = {
 			isa = PBXGroup;
 			children = (
 				5A167F37DA6DDA5798B1ED1C /* App */,
+				EFA05DC033BF504D5DBC45C5 /* Core */,
+				60BCA9AC8377B67CA3E675CA /* Profile */,
 				13F3212F725951343C5E23B4 /* Resources */,
 			);
 			path = LittlePup;
@@ -81,8 +113,17 @@
 			isa = PBXGroup;
 			children = (
 				4BF141BDD540D84B57C86069 /* LittlePupTests.swift */,
+				56470D1589B93A6D27E3A7EE /* PetProfileLoaderTests.swift */,
 			);
 			path = LittlePupTests;
+			sourceTree = "<group>";
+		};
+		EFA05DC033BF504D5DBC45C5 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				9F916D8AD8704ED3386BA10E /* PetState.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -93,6 +134,7 @@
 			buildConfigurationList = 76B61F6B8F75464C4076C94E /* Build configuration list for PBXNativeTarget "LittlePupTests" */;
 			buildPhases = (
 				484CCAE0C0C88917022639C4 /* Sources */,
+				E3DB1DFE5BB065D1FF5D44F1 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -162,11 +204,20 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		E3DB1DFE5BB065D1FF5D44F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				02428BC77460A7EED03FC5FA /* Pets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F1A7145232FB895FDD377B71 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				58C7052C4774D30A55DA8885 /* Assets.xcassets in Resources */,
+				DC3633E7F972214AB58A562F /* Pets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,6 +229,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6CB59574F1759E1D0FD6FEE /* LittlePupTests.swift in Sources */,
+				4C9717CE5C918E5B0BA98977 /* PetProfileLoaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,7 +237,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				189F9EC2C52FB7606EFB0881 /* AnimationConfig.swift in Sources */,
 				2E3E2963C4CEB94E9E95FA59 /* AppDelegate.swift in Sources */,
+				7A977AB77D76E4307A837D3B /* BehaviorConfig.swift in Sources */,
+				6D92E558CF911817C70902F0 /* PetProfile.swift in Sources */,
+				33A8F70788E12851B6BD751A /* PetProfileLoader.swift in Sources */,
+				236AEDB1D69CB5C05FFB80B3 /* PetState.swift in Sources */,
+				DCE99B0BB8125F42B836E433 /* ProfileError.swift in Sources */,
 				A069D9B0D610AEFB744F894D /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -286,6 +344,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -391,6 +450,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
