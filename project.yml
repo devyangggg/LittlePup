@@ -1,0 +1,51 @@
+name: LittlePup
+
+options:
+  bundleIdPrefix: com.littlepup
+  deploymentTarget:
+    macOS: "12.0"
+  createIntermediateGroups: true  # mirrors the App/Core/Animation/… folder hierarchy in Xcode
+
+settings:
+  base:
+    SWIFT_VERSION: "5"                    # Swift 5.x; avoids Swift 6 strict-concurrency errors
+    MACOSX_DEPLOYMENT_TARGET: "12.0"      # matches Info.plist LSMinimumSystemVersion
+
+targets:
+
+  LittlePup:
+    type: application
+    platform: macOS
+    deploymentTarget: "12.0"
+    sources:
+      - path: LittlePup
+        excludes:
+          - Info.plist  # referenced via INFOPLIST_FILE; must not also land in bundle resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.littlepup.app
+        INFOPLIST_FILE: LittlePup/Info.plist       # point to our hand-crafted plist
+        GENERATE_INFOPLIST_FILE: NO                # prevent Xcode from overwriting our plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_IDENTITY: "-"                    # ad-hoc sign; works locally without a dev account
+        CODE_SIGNING_REQUIRED: YES
+        CODE_SIGN_STYLE: Manual
+        SWIFT_VERSION: "5"
+        MACOSX_DEPLOYMENT_TARGET: "12.0"
+
+  LittlePupTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "12.0"
+    sources:
+      - path: LittlePupTests
+    dependencies:
+      - target: LittlePup
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.littlepup.LittlePupTests
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGNING_REQUIRED: YES
+        SWIFT_VERSION: "5"
+        MACOSX_DEPLOYMENT_TARGET: "12.0"

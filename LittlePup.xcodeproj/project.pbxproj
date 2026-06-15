@@ -1,0 +1,440 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2E3E2963C4CEB94E9E95FA59 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432BA10C2891DBE5BC9B169D /* AppDelegate.swift */; };
+		58C7052C4774D30A55DA8885 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5D6A115539B36AA08B0D5F3 /* Assets.xcassets */; };
+		A069D9B0D610AEFB744F894D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C10E02E5307F60EF8F4ABF /* main.swift */; };
+		F6CB59574F1759E1D0FD6FEE /* LittlePupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF141BDD540D84B57C86069 /* LittlePupTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		882D525DCCC77B71997C9E32 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 52505E8BBD27BC7842F8CE4F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 696590052A4F6BC9A378FAC0;
+			remoteInfo = LittlePup;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0130A117AEF100A7A3C2EF1E /* LittlePupTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LittlePupTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		432BA10C2891DBE5BC9B169D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		4BF141BDD540D84B57C86069 /* LittlePupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LittlePupTests.swift; sourceTree = "<group>"; };
+		6F7EB72464DAA3B07B1CA150 /* LittlePup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LittlePup.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		82C10E02E5307F60EF8F4ABF /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		C5D6A115539B36AA08B0D5F3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		13F3212F725951343C5E23B4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C5D6A115539B36AA08B0D5F3 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		3AD4A5A5FF100A71D5F15263 = {
+			isa = PBXGroup;
+			children = (
+				B4AB73B6EC10D3939A452442 /* LittlePup */,
+				C69F2289859E1462B5425BF4 /* LittlePupTests */,
+				59EF4C0749F136624244766B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		59EF4C0749F136624244766B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6F7EB72464DAA3B07B1CA150 /* LittlePup.app */,
+				0130A117AEF100A7A3C2EF1E /* LittlePupTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5A167F37DA6DDA5798B1ED1C /* App */ = {
+			isa = PBXGroup;
+			children = (
+				432BA10C2891DBE5BC9B169D /* AppDelegate.swift */,
+				82C10E02E5307F60EF8F4ABF /* main.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		B4AB73B6EC10D3939A452442 /* LittlePup */ = {
+			isa = PBXGroup;
+			children = (
+				5A167F37DA6DDA5798B1ED1C /* App */,
+				13F3212F725951343C5E23B4 /* Resources */,
+			);
+			path = LittlePup;
+			sourceTree = "<group>";
+		};
+		C69F2289859E1462B5425BF4 /* LittlePupTests */ = {
+			isa = PBXGroup;
+			children = (
+				4BF141BDD540D84B57C86069 /* LittlePupTests.swift */,
+			);
+			path = LittlePupTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0BB5F68C5395FFBE92839EFE /* LittlePupTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 76B61F6B8F75464C4076C94E /* Build configuration list for PBXNativeTarget "LittlePupTests" */;
+			buildPhases = (
+				484CCAE0C0C88917022639C4 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AD9F78B7485ADD3C760D1C2B /* PBXTargetDependency */,
+			);
+			name = LittlePupTests;
+			packageProductDependencies = (
+			);
+			productName = LittlePupTests;
+			productReference = 0130A117AEF100A7A3C2EF1E /* LittlePupTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		696590052A4F6BC9A378FAC0 /* LittlePup */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1E28D7C788B4F106F9F2D68 /* Build configuration list for PBXNativeTarget "LittlePup" */;
+			buildPhases = (
+				CE531811A386F693C16ACDFB /* Sources */,
+				F1A7145232FB895FDD377B71 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LittlePup;
+			packageProductDependencies = (
+			);
+			productName = LittlePup;
+			productReference = 6F7EB72464DAA3B07B1CA150 /* LittlePup.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		52505E8BBD27BC7842F8CE4F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					0BB5F68C5395FFBE92839EFE = {
+						ProvisioningStyle = Manual;
+					};
+					696590052A4F6BC9A378FAC0 = {
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 968CB6B42C15947BB2CC7F43 /* Build configuration list for PBXProject "LittlePup" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 3AD4A5A5FF100A71D5F15263;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 59EF4C0749F136624244766B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				696590052A4F6BC9A378FAC0 /* LittlePup */,
+				0BB5F68C5395FFBE92839EFE /* LittlePupTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F1A7145232FB895FDD377B71 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				58C7052C4774D30A55DA8885 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		484CCAE0C0C88917022639C4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F6CB59574F1759E1D0FD6FEE /* LittlePupTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE531811A386F693C16ACDFB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2E3E2963C4CEB94E9E95FA59 /* AppDelegate.swift in Sources */,
+				A069D9B0D610AEFB744F894D /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AD9F78B7485ADD3C760D1C2B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 696590052A4F6BC9A378FAC0 /* LittlePup */;
+			targetProxy = 882D525DCCC77B71997C9E32 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1819237B27BEE891C63D4E30 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5;
+			};
+			name = Release;
+		};
+		2667F40866CA2CE65BEAC2B2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_REQUIRED = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = LittlePup/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.littlepup.app;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5;
+			};
+			name = Release;
+		};
+		3A7407C12EE6844C7A809093 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGNING_REQUIRED = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.littlepup.LittlePupTests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LittlePup.app/Contents/MacOS/LittlePup";
+			};
+			name = Release;
+		};
+		AF8562561775C6F7D710725E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5;
+			};
+			name = Debug;
+		};
+		E586D8F9CEA63D55B4F91C08 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_REQUIRED = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = LittlePup/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.littlepup.app;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5;
+			};
+			name = Debug;
+		};
+		FA82FF9219AAA0503A6DDFDD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGNING_REQUIRED = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.littlepup.LittlePupTests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LittlePup.app/Contents/MacOS/LittlePup";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		76B61F6B8F75464C4076C94E /* Build configuration list for PBXNativeTarget "LittlePupTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA82FF9219AAA0503A6DDFDD /* Debug */,
+				3A7407C12EE6844C7A809093 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		968CB6B42C15947BB2CC7F43 /* Build configuration list for PBXProject "LittlePup" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AF8562561775C6F7D710725E /* Debug */,
+				1819237B27BEE891C63D4E30 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A1E28D7C788B4F106F9F2D68 /* Build configuration list for PBXNativeTarget "LittlePup" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E586D8F9CEA63D55B4F91C08 /* Debug */,
+				2667F40866CA2CE65BEAC2B2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 52505E8BBD27BC7842F8CE4F /* Project object */;
+}
