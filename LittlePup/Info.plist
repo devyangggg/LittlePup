@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- App name shown under the Dock icon and in the About panel -->
+    <key>CFBundleName</key>
+    <string>LittlePup</string>
+
+    <!-- Display name used by Finder, Spotlight, and the Dock label -->
+    <key>CFBundleDisplayName</key>
+    <string>LittlePup</string>
+
+    <!-- Unique reverse-DNS identifier used by Launch Services and UserDefaults suites -->
+    <key>CFBundleIdentifier</key>
+    <string>com.littlepup.app</string>
+
+    <!-- Monotonically increasing build number; increment on every release -->
+    <key>CFBundleVersion</key>
+    <string>1</string>
+
+    <!-- Human-readable marketing version string shown in the App Store and About panel -->
+    <key>CFBundleShortVersionString</key>
+    <string>0.1.0</string>
+
+    <!-- Declares this bundle as an application (required by Launch Services) -->
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+
+    <!-- Tells AppKit to instantiate NSApplication (not a subclass) as the shared app object -->
+    <key>NSPrincipalClass</key>
+    <string>NSApplication</string>
+
+    <!-- Opt in to Retina rendering so 200×200 frames appear crisp at 2× on the Dock tile -->
+    <key>NSHighResolutionCapable</key>
+    <true/>
+
+    <!-- Minimum macOS version; guards against running on unsupported system releases -->
+    <key>LSMinimumSystemVersion</key>
+    <string>12.0</string>
+
+    <!-- Legal attribution shown in the About panel and the App Store metadata -->
+    <key>NSHumanReadableCopyright</key>
+    <string>© 2026 LittlePup contributors. MIT License.</string>
+
+    <!-- App Store category; also affects Launchpad grouping -->
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.entertainment</string>
+
+    <!-- REQUIRED for Dock drag-drop: without this the Dock ignores file drops entirely -->
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+            <!-- Human-readable label for this document type entry -->
+            <key>CFBundleTypeName</key>
+            <string>Any File</string>
+
+            <!-- Viewer role: we open/read files but do not claim to be their default editor -->
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+
+            <!-- None rank: accept Dock drops without hijacking Finder's "Open With" for every file -->
+            <key>LSHandlerRank</key>
+            <string>None</string>
+
+            <!-- public.item is the root UTI that matches any file or folder -->
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>public.item</string>
+            </array>
+        </dict>
+    </array>
+
+    <!-- Prevent macOS from quietly terminating the ambient pet to reclaim memory -->
+    <key>NSSupportsAutomaticTermination</key>
+    <false/>
+
+    <!-- Guarantee applicationWillTerminate fires so Step 11 persistence always runs -->
+    <key>NSSupportsSuddenTermination</key>
+    <false/>
+
+    <!-- LSUIElement is intentionally ABSENT: its presence would remove the Dock icon entirely -->
+    <!-- NSMainStoryboardFile is intentionally ABSENT: we bootstrap programmatically in main.swift -->
+    <!-- NSMainNibFile is intentionally ABSENT: same reason as above -->
+</dict>
+</plist>
