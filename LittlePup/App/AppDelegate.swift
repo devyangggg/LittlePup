@@ -8,10 +8,14 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
 
     // Holds the full animation stack alive for the process lifetime; replaced by AppEnvironment later
     private var animationController: AnimationController?
+    // Loaded profile; kept alive so the auto-cycle can read personality weights at runtime
+    private var petProfile: PetProfile?
     // Builds the right-click Dock menu; retained here so NSMenuItem.target (which points to it) stays valid
     private var dockMenuBuilder: DockMenuBuilder?
-    // Pending auto-switch timer; held so it can be cancelled on app termination
+    // Pending 3-minute cycle timer; cancelled on termination
     private var autoSwitchTimer: Timer?
+    // Pending run-duration timer; fires when a timed run finishes to pick the next state
+    private var runTimer: Timer?
 
     // Called once after the run loop starts; all UI setup goes here
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -22,8 +26,9 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
 
     // Called just before the process exits; used for persistence in Step 11
     func applicationWillTerminate(_ notification: Notification) {
-        // Cancel the auto-switch timer so no callbacks fire during teardown
+        // Cancel both timers so no callbacks fire during teardown
         autoSwitchTimer?.invalidate()
+        runTimer?.invalidate()
         // Step 11: will call environment.petController.shutdown() here
     }
 
@@ -85,6 +90,9 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
             print("LittlePup: could not load sprite sheet")
             return
         }
+        // Retain the profile so personality weights are available throughout the session
+        petProfile = profile
+
         // Create the sprite sheet slicer with the frame size from the decoded profile
         let sheet = SpriteSheet(image: sheetImage, frameSize: profile.frameSize)
         // Create a shared clock; AnimationController changes its fps when the state changes
@@ -96,41 +104,34 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
                                              profile: profile,
                                              clock: clock,
                                              renderer: renderer)
-        // Begin looping idle: blink through all 4 frames, hold still for 2 s, then blink again
+        // Begin looping idle: blink through all frames, hold still for 4 s, then blink again
         controller.play(.idle, loop: true, cyclePause: 4.0)
         // Retain the controller; it owns clock and renderer so one reference keeps everything alive
         animationController = controller
 
-        // Step 7: build the Dock menu and wire each item to the animation controller
-        wireDockMenu(controller: controller)
-        // Start automatic idle/sleep alternation; replaced by PetController scheduler in Step 9
-        startAutoSwitch(controller: controller)
+        // Build the Dock menu with the pet's name and personality description as a header
+        wireDockMenu(controller: controller, profile: profile)
+        // Start the 3-minute idle/sleep/run auto-cycle
+        startAutoCycle(controller: controller)
     }
 
-    // MARK: – Auto idle/sleep switcher (replaced by PetController in Step 9)
+    // MARK: – 3-state weighted auto-cycle
 
-    // Kick off the first automatic switch; the chain reschedules itself indefinitely
-    private func startAutoSwitch(controller: AnimationController) {
-        // First automatic transition goes to sleep so idle gets some screen time first
-        scheduleNextSwitch(controller: controller, nextState: .sleep)
+    // Kick off the first automatic cycle; the chain reschedules itself indefinitely
+    private func startAutoCycle(controller: AnimationController) {
+        scheduleNextCycle(controller: controller)
     }
 
-    // Schedule one state switch after a random interval; on fire, plays the state and reschedules
-    private func scheduleNextSwitch(controller: AnimationController, nextState: PetState) {
-        // Vary the interval ±15 s around 1 minute so the switches feel organic rather than mechanical
-        let interval = TimeInterval.random(in: 45...75)
+    // Schedule one cycle tick after a ~3-minute random interval
+    private func scheduleNextCycle(controller: AnimationController) {
+        // Vary between 2.5 and 3.5 minutes so the transitions feel organic
+        let interval = TimeInterval.random(in: 150...210)
         let t = Timer(timeInterval: interval, repeats: false) { [weak self] _ in
             MainActor.assumeIsolated {
                 guard let self else { return }
-                if nextState == .sleep {
-                    // Switch to sleep and schedule the return to idle
-                    controller.play(.sleep, loop: true, cyclePause: 3.0)
-                    self.scheduleNextSwitch(controller: controller, nextState: .idle)
-                } else {
-                    // Switch to idle and schedule the next sleep
-                    controller.play(.idle, loop: true, cyclePause: 4.0)
-                    self.scheduleNextSwitch(controller: controller, nextState: .sleep)
-                }
+                // Pick and play the next state; run has its own timed follow-up
+                let next = self.pickCycleState()
+                self.playCycleState(next, controller: controller)
             }
         }
         // .common keeps the timer alive while Dock menus are open
@@ -138,8 +139,62 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
         autoSwitchTimer = t
     }
 
+    // Choose idle, sleep, or run weighted by personality; defaults to 2/2/1 when no personality set
+    private func pickCycleState() -> PetState {
+        // Read weights from the loaded profile, falling back to neutral defaults
+        let idleW  = petProfile?.personality?.idleWeight  ?? 2
+        let sleepW = petProfile?.personality?.sleepWeight ?? 2
+        let runW   = petProfile?.personality?.runWeight   ?? 1
+        // Total the weights so we can roll a proportional random number
+        let total  = idleW + sleepW + runW
+        let roll   = Int.random(in: 0..<total)
+        // Map the roll to a state bucket
+        if roll < idleW             { return .idle  }
+        if roll < idleW + sleepW    { return .sleep }
+        return .run
+    }
+
+    // Play the cycle state; for run, starts a capped timer then immediately picks the next state
+    private func playCycleState(_ state: PetState, controller: AnimationController) {
+        switch state {
+        case .idle:
+            // Return to the blink-and-hold loop; schedule the next cycle in ~3 minutes
+            controller.play(.idle, loop: true, cyclePause: 4.0)
+            scheduleNextCycle(controller: controller)
+
+        case .sleep:
+            // Slow breathing loop; schedule the next cycle in ~3 minutes
+            controller.play(.sleep, loop: true, cyclePause: 3.0)
+            scheduleNextCycle(controller: controller)
+
+        case .run:
+            // Cap run to personality.runDuration (Cherry: 12 s) or random 5–8 s for others
+            let duration = petProfile?.personality?.runDuration
+                           ?? TimeInterval.random(in: 5...8)
+            controller.play(.run, loop: true)
+            // After the duration, stop running and immediately pick the next state
+            let rt = Timer(timeInterval: duration, repeats: false) { [weak self] _ in
+                MainActor.assumeIsolated {
+                    guard let self else { return }
+                    let next = self.pickCycleState()
+                    self.playCycleState(next, controller: controller)
+                }
+            }
+            RunLoop.main.add(rt, forMode: .common)
+            runTimer = rt
+            // The outer cycle timer is not rescheduled here; playCycleState re-enters after run ends
+
+        default:
+            // Should never be reached; fall back to idle safely
+            controller.play(.idle, loop: true, cyclePause: 4.0)
+            scheduleNextCycle(controller: controller)
+        }
+    }
+
+    // MARK: – Dock menu
+
     // Create DockMenuBuilder with one closure per menu item; replaced by PetController in Step 9
-    private func wireDockMenu(controller: AnimationController) {
+    private func wireDockMenu(controller: AnimationController, profile: PetProfile) {
         // Each closure captures controller with a strong reference; controller is already retained
         // by animationController above, so this adds no ownership cycle
         let actions = DockMenuActions(
@@ -148,7 +203,7 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
                 controller.play(.idle, loop: true, cyclePause: 4.0)
             },
             sit: {
-                // Blink through all 4 sit frames, hold still for 2 s, then blink again — same rhythm as idle
+                // Blink through all sit frames, hold still for 4 s, then blink again — same rhythm as idle
                 controller.play(.sit, loop: true, cyclePause: 4.0)
             },
             sleep: {
@@ -173,6 +228,8 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
             }
         )
         // Build and retain the builder; NSMenuItem.target points at it, so it must outlive the menu
-        dockMenuBuilder = DockMenuBuilder(actions: actions)
+        dockMenuBuilder = DockMenuBuilder(petName: profile.name,
+                                          petDescription: profile.personality?.description,
+                                          actions: actions)
     }
 }

@@ -24,11 +24,15 @@ struct DockMenuActions {
 // and self holds the closures; releasing this object before the menu is discarded would crash.
 @MainActor final class DockMenuBuilder: NSObject {
 
+    // Pet identity shown as a non-clickable header at the top of every menu
+    private let petName: String
+    private let petDescription: String?
     // The action closures passed at init time; replaced by PetController in Step 9
     private let actions: DockMenuActions
 
-    // Inject actions at init so callers can swap them without rebuilding the builder
-    init(actions: DockMenuActions) {
+    init(petName: String, petDescription: String?, actions: DockMenuActions) {
+        self.petName = petName
+        self.petDescription = petDescription
         self.actions = actions
     }
 
@@ -36,6 +40,11 @@ struct DockMenuActions {
     func build() -> NSMenu {
         // Allocate a new NSMenu; AppKit discards the previous one automatically
         let menu = NSMenu()
+        // Pet name header — disabled so it acts as a label, not a button
+        menu.addItem(headerItem(petName))
+        // Personality description on the line below the name if present
+        if let desc = petDescription { menu.addItem(headerItem(desc)) }
+        menu.addItem(.separator())
         // Looping state actions
         menu.addItem(makeItem(title: "Idle",  closure: actions.idle))
         menu.addItem(makeItem(title: "Sit",   closure: actions.sit))
@@ -46,6 +55,13 @@ struct DockMenuActions {
         menu.addItem(makeItem(title: "Feed",  closure: actions.feed))
         menu.addItem(makeItem(title: "Bark",  closure: actions.bark))
         return menu
+    }
+
+    // Build a non-clickable label item used for the pet name and description header
+    private func headerItem(_ title: String) -> NSMenuItem {
+        let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
+        item.isEnabled = false
+        return item
     }
 
     // Build a single NSMenuItem wired to the given closure

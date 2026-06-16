@@ -16,6 +16,8 @@ struct PetProfile: Codable {
     let animations: [String: AnimationConfig]
     // Optional; when absent the scheduler will not auto-cycle (purely manual pet)
     let behaviors: [String: BehaviorConfig]?
+    // Optional personality traits; shapes the auto-cycle state picker and Dock menu header
+    let personality: PersonalityConfig?
 
     // Return the animation config for the given state, or nil if the profile omits that state
     func animation(for state: PetState) -> AnimationConfig? {

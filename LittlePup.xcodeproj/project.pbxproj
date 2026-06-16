@@ -21,6 +21,7 @@
 		73E59B257841481CC8B3A3CA /* SpriteSheetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1260437D9E87C13C1C8B2697 /* SpriteSheetTests.swift */; };
 		7A977AB77D76E4307A837D3B /* BehaviorConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E6EC2AB4588D1B70CFA1AC /* BehaviorConfig.swift */; };
 		A069D9B0D610AEFB744F894D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C10E02E5307F60EF8F4ABF /* main.swift */; };
+		A5076EF22EDBE294DD2CA9B7 /* PersonalityConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46ABAA40E173ACE391830D7 /* PersonalityConfig.swift */; };
 		BEA3EA0E6A54F255E74A0E6F /* AnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB159BC371EFCBD8E1F940FA /* AnimationController.swift */; };
 		DC275DE901BEF297F1344B24 /* SpriteSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0E32B176D2CC7CE4D8C9A5 /* SpriteSheet.swift */; };
 		DC3633E7F972214AB58A562F /* Pets in Resources */ = {isa = PBXBuildFile; fileRef = 5D9711C1552DB9CC97F4A096 /* Pets */; };
@@ -58,6 +59,7 @@
 		C021AA16C18B92860058210B /* PetProfileLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetProfileLoader.swift; sourceTree = "<group>"; };
 		C5D6A115539B36AA08B0D5F3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C73BEF762B79AD85004D7BCA /* ProfileError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileError.swift; sourceTree = "<group>"; };
+		D46ABAA40E173ACE391830D7 /* PersonalityConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalityConfig.swift; sourceTree = "<group>"; };
 		D5054ED170EF52A8EE52DFF2 /* DockMenuBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockMenuBuilder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,6 +116,7 @@
 			children = (
 				28B92B3BB424373D17BC6A52 /* AnimationConfig.swift */,
 				A1E6EC2AB4588D1B70CFA1AC /* BehaviorConfig.swift */,
+				D46ABAA40E173ACE391830D7 /* PersonalityConfig.swift */,
 				301B2E3159E2CA0EFCF291A2 /* PetProfile.swift */,
 				C021AA16C18B92860058210B /* PetProfileLoader.swift */,
 				C73BEF762B79AD85004D7BCA /* ProfileError.swift */,
@@ -279,6 +282,7 @@
 				614BFBD59B356A2460BC56C0 /* DockMenuBuilder.swift in Sources */,
 				5D30A1B381BD78ABD574FE91 /* DockRenderer.swift in Sources */,
 				2A2D547E552C76657C7CFC42 /* FrameClock.swift in Sources */,
+				A5076EF22EDBE294DD2CA9B7 /* PersonalityConfig.swift in Sources */,
 				6D92E558CF911817C70902F0 /* PetProfile.swift in Sources */,
 				33A8F70788E12851B6BD751A /* PetProfileLoader.swift in Sources */,
 				236AEDB1D69CB5C05FFB80B3 /* PetState.swift in Sources */,

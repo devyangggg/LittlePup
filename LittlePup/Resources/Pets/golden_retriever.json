@@ -1,6 +1,6 @@
 {
   "id": "golden_retriever",
-  "name": "Golden Retriever",
+  "name": "Cherry",
   "spriteSheet": "golden_retriever_sprites.png",
   "frameSize": 128,
   "animations": {
@@ -11,6 +11,13 @@
     "sleep": { "row": 4, "frameCount": 4, "fps": 3.0  },
     "eat":   { "row": 5, "frameCount": 6, "fps": 6.0 },
     "bark":  { "row": 6, "frameCount": 4, "fps": 12.0 }
+  },
+  "personality": {
+    "description": "Energetic and loves to run",
+    "runDuration": 12.0,
+    "idleWeight": 2,
+    "sleepWeight": 1,
+    "runWeight": 4
   },
   "behaviors": {
     "idle": {
