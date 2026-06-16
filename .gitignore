@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Xcode build output
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# Claude Code local settings (contains local paths, not for public repos)
+.claude/
+
+# Xcode user-specific files
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Environment / secrets (belt-and-suspenders)
+.env
+.env.*
+*.pem
+*.p12
+*.mobileprovision
