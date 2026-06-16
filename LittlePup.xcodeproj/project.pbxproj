@@ -15,8 +15,10 @@
 		4C9717CE5C918E5B0BA98977 /* PetProfileLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56470D1589B93A6D27E3A7EE /* PetProfileLoaderTests.swift */; };
 		58C7052C4774D30A55DA8885 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5D6A115539B36AA08B0D5F3 /* Assets.xcassets */; };
 		6D92E558CF911817C70902F0 /* PetProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 301B2E3159E2CA0EFCF291A2 /* PetProfile.swift */; };
+		73E59B257841481CC8B3A3CA /* SpriteSheetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1260437D9E87C13C1C8B2697 /* SpriteSheetTests.swift */; };
 		7A977AB77D76E4307A837D3B /* BehaviorConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E6EC2AB4588D1B70CFA1AC /* BehaviorConfig.swift */; };
 		A069D9B0D610AEFB744F894D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C10E02E5307F60EF8F4ABF /* main.swift */; };
+		DC275DE901BEF297F1344B24 /* SpriteSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0E32B176D2CC7CE4D8C9A5 /* SpriteSheet.swift */; };
 		DC3633E7F972214AB58A562F /* Pets in Resources */ = {isa = PBXBuildFile; fileRef = 5D9711C1552DB9CC97F4A096 /* Pets */; };
 		DCE99B0BB8125F42B836E433 /* ProfileError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73BEF762B79AD85004D7BCA /* ProfileError.swift */; };
 		F6CB59574F1759E1D0FD6FEE /* LittlePupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF141BDD540D84B57C86069 /* LittlePupTests.swift */; };
@@ -34,10 +36,12 @@
 
 /* Begin PBXFileReference section */
 		0130A117AEF100A7A3C2EF1E /* LittlePupTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LittlePupTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1260437D9E87C13C1C8B2697 /* SpriteSheetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteSheetTests.swift; sourceTree = "<group>"; };
 		28B92B3BB424373D17BC6A52 /* AnimationConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationConfig.swift; sourceTree = "<group>"; };
 		301B2E3159E2CA0EFCF291A2 /* PetProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetProfile.swift; sourceTree = "<group>"; };
 		432BA10C2891DBE5BC9B169D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4BF141BDD540D84B57C86069 /* LittlePupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LittlePupTests.swift; sourceTree = "<group>"; };
+		4D0E32B176D2CC7CE4D8C9A5 /* SpriteSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteSheet.swift; sourceTree = "<group>"; };
 		56470D1589B93A6D27E3A7EE /* PetProfileLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetProfileLoaderTests.swift; sourceTree = "<group>"; };
 		5D9711C1552DB9CC97F4A096 /* Pets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Pets; path = LittlePup/Resources/Pets; sourceTree = SOURCE_ROOT; };
 		6F7EB72464DAA3B07B1CA150 /* LittlePup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LittlePup.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -57,6 +61,14 @@
 				5D9711C1552DB9CC97F4A096 /* Pets */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		25200BBDFD47AA476542B735 /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				4D0E32B176D2CC7CE4D8C9A5 /* SpriteSheet.swift */,
+			);
+			path = Animation;
 			sourceTree = "<group>";
 		};
 		3AD4A5A5FF100A71D5F15263 = {
@@ -101,6 +113,7 @@
 		B4AB73B6EC10D3939A452442 /* LittlePup */ = {
 			isa = PBXGroup;
 			children = (
+				25200BBDFD47AA476542B735 /* Animation */,
 				5A167F37DA6DDA5798B1ED1C /* App */,
 				EFA05DC033BF504D5DBC45C5 /* Core */,
 				60BCA9AC8377B67CA3E675CA /* Profile */,
@@ -114,6 +127,7 @@
 			children = (
 				4BF141BDD540D84B57C86069 /* LittlePupTests.swift */,
 				56470D1589B93A6D27E3A7EE /* PetProfileLoaderTests.swift */,
+				1260437D9E87C13C1C8B2697 /* SpriteSheetTests.swift */,
 			);
 			path = LittlePupTests;
 			sourceTree = "<group>";
@@ -230,6 +244,7 @@
 			files = (
 				F6CB59574F1759E1D0FD6FEE /* LittlePupTests.swift in Sources */,
 				4C9717CE5C918E5B0BA98977 /* PetProfileLoaderTests.swift in Sources */,
+				73E59B257841481CC8B3A3CA /* SpriteSheetTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +259,7 @@
 				33A8F70788E12851B6BD751A /* PetProfileLoader.swift in Sources */,
 				236AEDB1D69CB5C05FFB80B3 /* PetState.swift in Sources */,
 				DCE99B0BB8125F42B836E433 /* ProfileError.swift in Sources */,
+				DC275DE901BEF297F1344B24 /* SpriteSheet.swift in Sources */,
 				A069D9B0D610AEFB744F894D /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
