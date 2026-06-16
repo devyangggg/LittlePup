@@ -6,14 +6,16 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
 // makes that contract explicit and allows calling other @MainActor types (e.g. DockRenderer)
 @MainActor final class AppDelegate: NSObject, NSApplicationDelegate {
 
-    // Kept alive for the process lifetime; will be replaced by AppEnvironment in a later step
-    private var renderer: DockRenderer?
+    // Holds the full animation stack alive for the process lifetime; replaced by AppEnvironment later
+    private var animationController: AnimationController?
+    // Builds the right-click Dock menu; retained here so NSMenuItem.target (which points to it) stays valid
+    private var dockMenuBuilder: DockMenuBuilder?
 
-    // Called once, after the app's run loop starts but before any UI is displayed
+    // Called once after the run loop starts; all UI setup goes here
     func applicationDidFinishLaunching(_ notification: Notification) {
-        // Step 4: push idle frame 0 to the Dock icon immediately so it animates from the first beat
-        showStaticIdleFrame()
-        // Future steps replace this with: environment = try AppEnvironment(); environment.start()
+        // Step 5: start looping the idle animation immediately on the Dock icon
+        startIdleAnimation()
+        // Future steps replace this body with: environment = try? AppEnvironment()
     }
 
     // Called just before the process exits; used for persistence in Step 11
@@ -28,10 +30,10 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
         return false
     }
 
-    // Provides the right-click Dock menu; wired to DockMenuBuilder in Step 7
+    // Provides the right-click Dock menu; AppKit calls this each time the user right-clicks the Dock icon
     func applicationDockMenu(_ sender: NSApplication) -> NSMenu? {
-        // Step 7: will return DockMenuBuilder().build() here
-        return nil
+        // Return a fresh menu each call; AppKit discards the previous NSMenu automatically
+        return dockMenuBuilder?.build()
     }
 
     // Modern file-drop hook (macOS 10.13+); called when files are dropped onto the Dock icon
@@ -45,37 +47,66 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
         sender.reply(toOpenOrPrint: .success)
     }
 
-    // MARK: – Step 4 helper (replaced by AnimationController in Step 5)
+    // MARK: – Step 5 helper (replaced by PetController.start() in Step 9)
 
-    // Load the profile, slice idle frame 0, and push it to the Dock icon
-    private func showStaticIdleFrame() {
-        // Decode the bundled JSON profile so we know the correct row and frameSize
+    // Build the full animation stack and begin looping the idle animation on the Dock
+    private func startIdleAnimation() {
+        // Decode the bundled golden retriever profile (row/frameCount/fps for each state)
         let loader = PetProfileLoader(bundle: .main, fileManager: .default)
         guard let profile = try? loader.loadDefaultProfile() else {
-            // If the profile is missing or invalid, the bundle's static icon remains visible
-            print("LittlePup: could not load default profile – showing bundle icon")
+            // If the profile is missing the app falls back to the static bundle icon
+            print("LittlePup: could not load default profile")
             return
         }
-        // Locate the sprite sheet PNG that sits alongside the JSON in the Pets/ folder reference
+        // Load the sprite sheet PNG from the Pets/ folder reference inside the app bundle
         guard let sheetURL = Bundle.main.url(forResource: "golden_retriever_sprites",
                                              withExtension: "png",
                                              subdirectory: "Pets"),
               let sheetImage = NSImage(contentsOf: sheetURL) else {
-            print("LittlePup: could not load sprite sheet – showing bundle icon")
+            print("LittlePup: could not load sprite sheet")
             return
         }
-        // Build the sprite sheet slicer using the frameSize from the profile
+        // Create the sprite sheet slicer with the frame size from the decoded profile
         let sheet = SpriteSheet(image: sheetImage, frameSize: profile.frameSize)
-        // Retrieve the AnimationConfig for idle so we know which row to slice from
-        guard let idleConfig = profile.animation(for: .idle) else {
-            print("LittlePup: no idle animation in profile – showing bundle icon")
-            return
-        }
-        // Slice only frame 0 of the idle row; AnimationController will cycle all frames in Step 5
-        let idleFrame0 = sheet.frame(row: idleConfig.row, index: 0)
-        // Create the renderer and push the frame; keep the renderer alive via the property
-        let r = DockRenderer(application: .shared)
-        r.render(idleFrame0)
-        renderer = r
+        // Create a shared clock; AnimationController changes its fps when the state changes
+        let clock = FrameClock()
+        // Create the renderer; all applicationIconImage writes go through this one object
+        let renderer = DockRenderer(application: .shared)
+        // Wire everything together; AnimationController sets clock.onTick in its init
+        let controller = AnimationController(spriteSheet: sheet,
+                                             profile: profile,
+                                             clock: clock,
+                                             renderer: renderer)
+        // Begin looping idle: blink through all 4 frames, hold still for 2 s, then blink again
+        controller.play(.idle, loop: true, cyclePause: 2.0)
+        // Retain the controller; it owns clock and renderer so one reference keeps everything alive
+        animationController = controller
+
+        // Step 7: build the Dock menu and wire each item to the animation controller
+        wireDockMenu(controller: controller)
+    }
+
+    // Create DockMenuBuilder with one closure per menu item; replaced by PetController in Step 9
+    private func wireDockMenu(controller: AnimationController) {
+        // Each closure captures controller with a strong reference; controller is already retained
+        // by animationController above, so this adds no ownership cycle
+        let actions = DockMenuActions(
+            sleep: {
+                // Hold on frame 0 for 3 s between breathing cycles so the rhythm feels natural
+                controller.play(.sleep, loop: true, cyclePause: 3.0)
+            },
+            walk: {
+                // Loop walk animation on the Dock tile (overlay window added in Step 12)
+                controller.play(.walk, loop: true)
+            },
+            feed: {
+                // Play eat exactly once, then restore the idle blink-and-hold loop
+                controller.playOnce(.eat) {
+                    controller.play(.idle, loop: true, cyclePause: 2.0)
+                }
+            }
+        )
+        // Build and retain the builder; NSMenuItem.target points at it, so it must outlive the menu
+        dockMenuBuilder = DockMenuBuilder(actions: actions)
     }
 }

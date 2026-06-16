@@ -3,7 +3,9 @@
     "allow": [
       "Bash(xcodegen generate *)",
       "Bash(xcodebuild -project /Users/devyangsharma/Development/littledog/LittlePup.xcodeproj -scheme LittlePup -configuration Debug build)",
-      "Bash(xcodebuild -project LittlePup.xcodeproj -scheme LittlePup -configuration Debug build)"
+      "Bash(xcodebuild -project LittlePup.xcodeproj -scheme LittlePup -configuration Debug build)",
+      "Bash(pkill -x LittlePup)",
+      "Bash(open /Users/devyangsharma/Library/Developer/Xcode/DerivedData/LittlePup-gavifupdwigmzbgzdwscxedzfuzh/Build/Products/Debug/LittlePup.app)"
     ]
   }
 }
