@@ -23,11 +23,15 @@ jobs:
         run: xcodegen generate
 
       - name: Run tests
+        id: tests
         run: |
-          xcodebuild test \
+          OUTPUT=$(xcodebuild test \
             -project LittlePup.xcodeproj \
             -scheme LittlePupTests \
-            -destination 'platform=macOS'
+            -destination 'platform=macOS' 2>&1)
+          echo "$OUTPUT"
+          COUNT=$(echo "$OUTPUT" | grep -E "Executed [0-9]+ test" | tail -1 | grep -oE "[0-9]+ tests")
+          echo "summary=${COUNT}, 0 failures" >> $GITHUB_OUTPUT
 
       - name: Build release app
         run: |
@@ -50,9 +54,48 @@ jobs:
 
       - name: Publish release
         run: |
-          SHORT_SHA="${GITHUB_SHA::7}"
-          gh release create "build-${SHORT_SHA}" LittlePup.pkg \
-            --title "LittlePup build-${SHORT_SHA}" \
-            --notes "Auto-built from [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) on $(date -u '+%d %b %Y at %H:%M UTC'). All tests passed."
+          # Find the latest semver release (vX.Y.Z) and increment the patch number
+          LATEST=$(gh release list \
+            --json tagName \
+            --jq '[.[] | select(.tagName | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$"))] | .[0].tagName // "v0.0.0"')
+          MAJOR=$(echo $LATEST | tr -d 'v' | cut -d. -f1)
+          MINOR=$(echo $LATEST | cut -d. -f2)
+          PATCH=$(echo $LATEST | cut -d. -f3)
+          NEW_VERSION="v${MAJOR}.${MINOR}.$((PATCH + 1))"
+
+          BUILD_DATE="$(date -u '+%d %b %Y at %H:%M UTC')"
+          COMMIT_URL="${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
+
+          gh release create "${NEW_VERSION}" LittlePup.pkg \
+            --title "LittlePup ${NEW_VERSION}" \
+            --notes "## Download
+
+Click **LittlePup.pkg** above to download.
+
+## Install
+
+1. Right-click \`LittlePup.pkg\` → **Open** → **Open** (one-time step to bypass the unsigned-app warning)
+2. Click through the installer — the app lands in \`/Applications\` automatically
+3. Launch LittlePup from Applications or Spotlight
+
+## What's in this build
+
+- Animated golden retriever in your Dock tile
+- Auto-switches between idle and sleep every ~1 minute
+- Right-click Dock menu: Idle, Sit, Sleep, Walk, Feed, Bark
+
+## Requirements
+
+- macOS 12 Monterey or later
+- Apple Silicon or Intel
+
+## Build info
+
+| | |
+|---|---|
+| **Version** | \`${NEW_VERSION}\` |
+| **Commit** | [${{ github.sha }}](${COMMIT_URL}) |
+| **Date** | ${BUILD_DATE} |
+| **Tests** | ${{ steps.tests.outputs.summary }} |"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
