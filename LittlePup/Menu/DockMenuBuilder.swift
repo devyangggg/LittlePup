@@ -5,12 +5,18 @@ import AppKit // NSMenu and NSMenuItem live in AppKit
 // Closures for each menu command; AppDelegate fills these in Step 7,
 // PetController replaces them with scheduler-aware versions in Step 9
 struct DockMenuActions {
+    // Return to the idle blink-and-hold loop
+    let idle: () -> Void
+    // Loop the sit animation until another action interrupts
+    let sit: () -> Void
     // Loop the sleep animation until another action interrupts
     let sleep: () -> Void
     // Loop the walk animation until another action interrupts (overlay added in Step 12)
     let walk: () -> Void
     // Play eat once, then return to idle
     let feed: () -> Void
+    // Play bark once, then return to idle
+    let bark: () -> Void
 }
 
 // Builds the right-click Dock menu from DockMenuActions closures.
@@ -30,12 +36,15 @@ struct DockMenuActions {
     func build() -> NSMenu {
         // Allocate a new NSMenu; AppKit discards the previous one automatically
         let menu = NSMenu()
-        // Add one item per pet action
+        // Looping state actions
+        menu.addItem(makeItem(title: "Idle",  closure: actions.idle))
+        menu.addItem(makeItem(title: "Sit",   closure: actions.sit))
         menu.addItem(makeItem(title: "Sleep", closure: actions.sleep))
         menu.addItem(makeItem(title: "Walk",  closure: actions.walk))
-        // Visual separator before the food-related action
+        // Visual separator before the one-shot actions
         menu.addItem(.separator())
         menu.addItem(makeItem(title: "Feed",  closure: actions.feed))
+        menu.addItem(makeItem(title: "Bark",  closure: actions.bark))
         return menu
     }
 

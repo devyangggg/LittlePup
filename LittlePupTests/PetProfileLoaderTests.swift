@@ -229,17 +229,19 @@ final class PetProfileLoaderTests: XCTestCase {
         let profile = try loader.loadDefaultProfile()
         // Verify the decoded identity fields match the JSON
         XCTAssertEqual(profile.id, "golden_retriever")
-        XCTAssertEqual(profile.frameSize, 200)
-        // All five states must have animation configs in the golden retriever pack
+        XCTAssertEqual(profile.frameSize, 128)
+        // All seven states must have animation configs in the golden retriever pack
         for state in PetState.allCases {
             XCTAssertNotNil(profile.animation(for: state),
                             "Expected animation config for state: \(state.rawValue)")
         }
-        // eat is intentionally absent from behaviors (it is interrupt-only, never scheduled)
+        // eat and bark are interrupt-only (never auto-scheduled); they must not appear in behaviors
         XCTAssertNil(profile.behavior(for: .eat),
                      "eat must not appear in behaviors — it is interrupt-only")
-        // The four auto-schedulable states must each have a behavior entry
-        for state in [PetState.idle, .walk, .sit, .sleep] {
+        XCTAssertNil(profile.behavior(for: .bark),
+                     "bark must not appear in behaviors — it is interrupt-only")
+        // The five auto-schedulable states must each have a behavior entry
+        for state in [PetState.idle, .walk, .run, .sit, .sleep] {
             XCTAssertNotNil(profile.behavior(for: state),
                             "Expected behavior config for state: \(state.rawValue)")
         }

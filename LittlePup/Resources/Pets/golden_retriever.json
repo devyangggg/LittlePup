@@ -2,13 +2,15 @@
   "id": "golden_retriever",
   "name": "Golden Retriever",
   "spriteSheet": "golden_retriever_sprites.png",
-  "frameSize": 200,
+  "frameSize": 128,
   "animations": {
-    "idle":  { "row": 0, "frameCount": 4, "fps": 10.0  },
-    "walk":  { "row": 1, "frameCount": 6, "fps": 6.0 },
-    "sit":   { "row": 2, "frameCount": 3, "fps": 6.0  },
-    "sleep": { "row": 3, "frameCount": 2, "fps": 1.0  },
-    "eat":   { "row": 4, "frameCount": 4, "fps": 3.0  }
+    "idle":  { "row": 0, "frameCount": 7, "fps": 10.0  },
+    "walk":  { "row": 1, "frameCount": 8, "fps": 7.0 },
+    "run":   { "row": 2, "frameCount": 8, "fps": 16.0 },
+    "sit":   { "row": 3, "frameCount": 4, "fps": 6.0  },
+    "sleep": { "row": 4, "frameCount": 4, "fps": 3.0  },
+    "eat":   { "row": 5, "frameCount": 6, "fps": 6.0 },
+    "bark":  { "row": 6, "frameCount": 4, "fps": 12.0 }
   },
   "behaviors": {
     "idle": {
@@ -16,6 +18,7 @@
       "maxDuration": 8.0,
       "nextStates": [
         { "state": "walk",  "weight": 3 },
+        { "state": "run",   "weight": 1 },
         { "state": "sit",   "weight": 2 },
         { "state": "sleep", "weight": 1 }
       ]
@@ -24,8 +27,18 @@
       "minDuration": 5.0,
       "maxDuration": 12.0,
       "nextStates": [
-        { "state": "idle", "weight": 3 },
-        { "state": "sit",  "weight": 1 }
+        { "state": "idle",  "weight": 3 },
+        { "state": "run",   "weight": 1 },
+        { "state": "sit",   "weight": 1 }
+      ]
+    },
+    "run": {
+      "minDuration": 3.0,
+      "maxDuration": 7.0,
+      "nextStates": [
+        { "state": "idle",  "weight": 2 },
+        { "state": "walk",  "weight": 2 },
+        { "state": "sit",   "weight": 1 }
       ]
     },
     "sit": {
@@ -40,7 +53,7 @@
       "minDuration": 8.0,
       "maxDuration": 20.0,
       "nextStates": [
-        { "state": "idle", "weight": 1 }
+        { "state": "idle",  "weight": 1 }
       ]
     }
   }
