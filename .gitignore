@@ -20,6 +20,10 @@ xcuserdata/
 .build/
 .swiftpm/
 
+# Distribution artifacts (built locally, uploaded via CI — not committed)
+*.pkg
+*.zip
+
 # Environment / secrets (belt-and-suspenders)
 .env
 .env.*
