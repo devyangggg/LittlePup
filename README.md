@@ -12,15 +12,15 @@ Go to the [Releases](https://github.com/devyangggg/LittlePup/releases) page and 
 
 ## Install
 
-1. Unzip **LittlePup.zip**
-2. Drag **LittlePup.app** into your **Applications** folder
-3. Double-click to launch
+1. Download **LittlePup.pkg** and double-click it
+2. Click through the installer — it puts the app in your Applications folder automatically
+3. Open LittlePup from Applications or Spotlight
 
-**First launch only** — macOS will block it with "developer cannot be verified" because the app isn't signed with a paid Apple certificate. To get past this:
+**First launch only** — macOS will block it because the app isn't signed with a paid Apple certificate. To get past this:
 
-**Option A (easiest):** Right-click `LittlePup.app` → click **Open** → click **Open** in the popup
+**Option A (easiest):** Right-click `LittlePup.pkg` → click **Open** → click **Open** in the popup, then run through the installer
 
-**Option B (Terminal):** Run this once, then open normally:
+**Option B (Terminal):** Run this once after installing, then open normally:
 ```bash
 xattr -dr com.apple.quarantine /Applications/LittlePup.app
 ```
