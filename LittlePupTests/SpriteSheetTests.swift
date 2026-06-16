@@ -6,7 +6,7 @@ import AppKit  // NSImage, NSSize, and CGSize are needed here
 
 final class SpriteSheetTests: XCTestCase {
 
-    // Shared sheet instance loaded once per test class; all tests use the real 1200×1000 PNG
+    // Shared sheet instance loaded once per test class; all tests use the real 1024×896 PNG
     private var sheet: SpriteSheet!
 
     // Build the sheet before every test using the sprite PNG from the test bundle
@@ -21,8 +21,8 @@ final class SpriteSheetTests: XCTestCase {
             // Fail the test immediately if the resource is missing rather than silently skipping
             throw XCTSkip("golden_retriever_sprites.png not found in test bundle Pets/ folder")
         }
-        // Create the SpriteSheet with the 200px frame size declared in the JSON profile
-        sheet = SpriteSheet(image: image, frameSize: 200)
+        // Create the SpriteSheet with the 128px frame size declared in the JSON profile
+        sheet = SpriteSheet(image: image, frameSize: 128)
     }
 
     // Release the sheet after every test to avoid cross-test state
@@ -33,81 +33,93 @@ final class SpriteSheetTests: XCTestCase {
 
     // MARK: – pixelSize
 
-    // The reported pixel size must exactly match the raw PNG dimensions (1200 × 1000)
+    // The reported pixel size must exactly match the raw PNG dimensions (1024 × 896)
     func testPixelSizeMatchesActualPNG() {
-        // Known: 6 columns × 200px = 1200px wide; 5 rows × 200px = 1000px tall
-        XCTAssertEqual(sheet.pixelSize.width,  1200,
-                       "pixelSize.width should be 1200 (6 frames × 200px)")
-        XCTAssertEqual(sheet.pixelSize.height, 1000,
-                       "pixelSize.height should be 1000 (5 rows × 200px)")
+        // Known: 8 columns × 128px = 1024px wide; 7 rows × 128px = 896px tall
+        XCTAssertEqual(sheet.pixelSize.width,  1024,
+                       "pixelSize.width should be 1024 (8 frames × 128px)")
+        XCTAssertEqual(sheet.pixelSize.height,  896,
+                       "pixelSize.height should be 896 (7 rows × 128px)")
     }
 
     // MARK: – frameSize
 
     // The frameSize property must return the value passed at init time
     func testFrameSizeReturnsInitValue() {
-        XCTAssertEqual(sheet.frameSize, 200, "frameSize must match the value passed to init")
+        XCTAssertEqual(sheet.frameSize, 128, "frameSize must match the value passed to init")
     }
 
     // MARK: – frame(row:index:) – size and non-nil
 
-    // Every frame must be a non-nil NSImage declared at exactly 200 × 200 points
-    func testFrameSizeIs200x200() {
+    // Every frame must be a non-nil NSImage declared at exactly 128 × 128 points
+    func testFrameSizeIs128x128() {
         // Sample frame from row 0 (idle), first column
         let f = sheet.frame(row: 0, index: 0)
-        XCTAssertEqual(f.size, NSSize(width: 200, height: 200),
-                       "Each sliced frame must be 200×200 points")
+        XCTAssertEqual(f.size, NSSize(width: 128, height: 128),
+                       "Each sliced frame must be 128×128 points")
     }
 
     // frame() from different rows and columns must all return the same declared size
     func testFrameSizeIsConsistentAcrossRows() {
-        // Check one frame from each of the 5 rows at column 0
-        for row in 0..<5 {
+        // Check one frame from each of the 7 rows at column 0
+        for row in 0..<7 {
             let f = sheet.frame(row: row, index: 0)
-            XCTAssertEqual(f.size, NSSize(width: 200, height: 200),
-                           "Row \(row), index 0 should be 200×200")
+            XCTAssertEqual(f.size, NSSize(width: 128, height: 128),
+                           "Row \(row), index 0 should be 128×128")
         }
     }
 
     // MARK: – frames(row:count:)
 
-    // Idle row has 4 frames; the returned array must contain exactly 4 images
+    // Idle row has 7 frames
     func testIdleRowReturnsCorrectFrameCount() {
-        let idleFrames = sheet.frames(row: 0, count: 4) // row 0 = IDLE, 4 frames
-        XCTAssertEqual(idleFrames.count, 4, "IDLE row must produce 4 frames")
+        let idleFrames = sheet.frames(row: 0, count: 7) // row 0 = IDLE, 7 frames
+        XCTAssertEqual(idleFrames.count, 7, "IDLE row must produce 7 frames")
     }
 
-    // Walk row has 6 frames; this is also the widest row (fills the full sheet width)
+    // Walk row has 8 frames
     func testWalkRowReturnsCorrectFrameCount() {
-        let walkFrames = sheet.frames(row: 1, count: 6) // row 1 = WALK, 6 frames
-        XCTAssertEqual(walkFrames.count, 6, "WALK row must produce 6 frames")
+        let walkFrames = sheet.frames(row: 1, count: 8) // row 1 = WALK, 8 frames
+        XCTAssertEqual(walkFrames.count, 8, "WALK row must produce 8 frames")
     }
 
-    // Sit row has 3 frames
+    // Run row has 8 frames
+    func testRunRowReturnsCorrectFrameCount() {
+        let runFrames = sheet.frames(row: 2, count: 8) // row 2 = RUN, 8 frames
+        XCTAssertEqual(runFrames.count, 8, "RUN row must produce 8 frames")
+    }
+
+    // Sit row has 4 frames
     func testSitRowReturnsCorrectFrameCount() {
-        let sitFrames = sheet.frames(row: 2, count: 3) // row 2 = SIT, 3 frames
-        XCTAssertEqual(sitFrames.count, 3, "SIT row must produce 3 frames")
+        let sitFrames = sheet.frames(row: 3, count: 4) // row 3 = SIT, 4 frames
+        XCTAssertEqual(sitFrames.count, 4, "SIT row must produce 4 frames")
     }
 
-    // Sleep row has 2 frames (fewest of all states)
+    // Sleep row has 4 frames
     func testSleepRowReturnsCorrectFrameCount() {
-        let sleepFrames = sheet.frames(row: 3, count: 2) // row 3 = SLEEP, 2 frames
-        XCTAssertEqual(sleepFrames.count, 2, "SLEEP row must produce 2 frames")
+        let sleepFrames = sheet.frames(row: 4, count: 4) // row 4 = SLEEP, 4 frames
+        XCTAssertEqual(sleepFrames.count, 4, "SLEEP row must produce 4 frames")
     }
 
-    // Eat row has 4 frames
+    // Eat row has 6 frames
     func testEatRowReturnsCorrectFrameCount() {
-        let eatFrames = sheet.frames(row: 4, count: 4) // row 4 = EAT, 4 frames
-        XCTAssertEqual(eatFrames.count, 4, "EAT row must produce 4 frames")
+        let eatFrames = sheet.frames(row: 5, count: 6) // row 5 = EAT, 6 frames
+        XCTAssertEqual(eatFrames.count, 6, "EAT row must produce 6 frames")
     }
 
-    // Every element in a frames() result must be 200×200
-    func testAllFramesInSliceAre200x200() {
+    // Bark row has 4 frames
+    func testBarkRowReturnsCorrectFrameCount() {
+        let barkFrames = sheet.frames(row: 6, count: 4) // row 6 = BARK, 4 frames
+        XCTAssertEqual(barkFrames.count, 4, "BARK row must produce 4 frames")
+    }
+
+    // Every element in a frames() result must be 128×128
+    func testAllFramesInSliceAre128x128() {
         // Use the walk row (largest frame count) for a thorough check
-        let walkFrames = sheet.frames(row: 1, count: 6)
+        let walkFrames = sheet.frames(row: 1, count: 8)
         for (i, f) in walkFrames.enumerated() {
-            XCTAssertEqual(f.size, NSSize(width: 200, height: 200),
-                           "Walk frame \(i) should be 200×200")
+            XCTAssertEqual(f.size, NSSize(width: 128, height: 128),
+                           "Walk frame \(i) should be 128×128")
         }
     }
 
@@ -135,15 +147,17 @@ final class SpriteSheetTests: XCTestCase {
 
     // MARK: – preload()
 
-    // Calling preload() with all five animation configs must not crash or throw
+    // Calling preload() with all seven animation configs must not crash or throw
     func testPreloadAllAnimationsSucceeds() {
         // Build the AnimationConfig list mirroring golden_retriever.json
         let animations: [AnimationConfig] = [
-            AnimationConfig(row: 0, frameCount: 4, fps: 8.0),  // idle
-            AnimationConfig(row: 1, frameCount: 6, fps: 10.0), // walk
-            AnimationConfig(row: 2, frameCount: 3, fps: 6.0),  // sit
-            AnimationConfig(row: 3, frameCount: 2, fps: 2.0),  // sleep
-            AnimationConfig(row: 4, frameCount: 4, fps: 8.0),  // eat
+            AnimationConfig(row: 0, frameCount: 7, fps:  8.0),  // idle
+            AnimationConfig(row: 1, frameCount: 8, fps: 12.0),  // walk
+            AnimationConfig(row: 2, frameCount: 8, fps: 16.0),  // run
+            AnimationConfig(row: 3, frameCount: 4, fps:  6.0),  // sit
+            AnimationConfig(row: 4, frameCount: 4, fps:  3.0),  // sleep
+            AnimationConfig(row: 5, frameCount: 6, fps: 10.0),  // eat
+            AnimationConfig(row: 6, frameCount: 4, fps: 12.0),  // bark
         ]
         // preload() must complete without crashing; it returns Void
         sheet.preload(animations: animations)

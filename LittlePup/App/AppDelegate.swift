@@ -78,7 +78,7 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
                                              clock: clock,
                                              renderer: renderer)
         // Begin looping idle: blink through all 4 frames, hold still for 2 s, then blink again
-        controller.play(.idle, loop: true, cyclePause: 2.0)
+        controller.play(.idle, loop: true, cyclePause: 4.0)
         // Retain the controller; it owns clock and renderer so one reference keeps everything alive
         animationController = controller
 
@@ -91,6 +91,14 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
         // Each closure captures controller with a strong reference; controller is already retained
         // by animationController above, so this adds no ownership cycle
         let actions = DockMenuActions(
+            idle: {
+                // Resume the blink-and-hold loop from any other state
+                controller.play(.idle, loop: true, cyclePause: 4.0)
+            },
+            sit: {
+                // Blink through all 4 sit frames, hold still for 2 s, then blink again — same rhythm as idle
+                controller.play(.sit, loop: true, cyclePause: 4.0)
+            },
             sleep: {
                 // Hold on frame 0 for 3 s between breathing cycles so the rhythm feels natural
                 controller.play(.sleep, loop: true, cyclePause: 3.0)
@@ -102,7 +110,13 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
             feed: {
                 // Play eat exactly once, then restore the idle blink-and-hold loop
                 controller.playOnce(.eat) {
-                    controller.play(.idle, loop: true, cyclePause: 2.0)
+                    controller.play(.idle, loop: true, cyclePause: 4.0)
+                }
+            },
+            bark: {
+                // Play bark exactly once, then restore the idle blink-and-hold loop
+                controller.playOnce(.bark) {
+                    controller.play(.idle, loop: true, cyclePause: 4.0)
                 }
             }
         )
