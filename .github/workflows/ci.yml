@@ -53,8 +53,13 @@ jobs:
             LittlePup.pkg
 
       - name: Publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FULL_SHA: ${{ github.sha }}
+          SERVER_URL: ${{ github.server_url }}
+          REPOSITORY: ${{ github.repository }}
+          TEST_SUMMARY: ${{ steps.tests.outputs.summary }}
         run: |
-          # Find the latest semver release (vX.Y.Z) and increment the patch number
           LATEST=$(gh release list \
             --json tagName \
             --jq '[.[] | select(.tagName | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$"))] | .[0].tagName // "v0.0.0"')
@@ -62,40 +67,41 @@ jobs:
           MINOR=$(echo $LATEST | cut -d. -f2)
           PATCH=$(echo $LATEST | cut -d. -f3)
           NEW_VERSION="v${MAJOR}.${MINOR}.$((PATCH + 1))"
-
           BUILD_DATE="$(date -u '+%d %b %Y at %H:%M UTC')"
-          COMMIT_URL="${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
+          SHORT_SHA="${FULL_SHA::7}"
+          COMMIT_URL="${SERVER_URL}/${REPOSITORY}/commit/${FULL_SHA}"
+          cat > notes.md << NOTES
+          ## Download
 
+          Click **LittlePup.pkg** above to download.
+
+          ## Install
+
+          1. Right-click \`LittlePup.pkg\` → **Open** → **Open** (one-time step to bypass the unsigned-app warning)
+          2. Click through the installer — the app lands in \`/Applications\` automatically
+          3. Launch LittlePup from Applications or Spotlight
+
+          ## What's in this build
+
+          - Animated golden retriever in your Dock tile
+          - Auto-switches between idle and sleep every ~1 minute
+          - Right-click Dock menu: Idle, Sit, Sleep, Walk, Feed, Bark
+          - Drop \`food.png\` onto the Dock icon to trigger the eating animation
+
+          ## Requirements
+
+          - macOS 12 Monterey or later
+          - Apple Silicon or Intel
+
+          ## Build info
+
+          | | |
+          |---|---|
+          | **Version** | \`${NEW_VERSION}\` |
+          | **Commit** | [${SHORT_SHA}](${COMMIT_URL}) |
+          | **Date** | ${BUILD_DATE} |
+          | **Tests** | ${TEST_SUMMARY} |
+          NOTES
           gh release create "${NEW_VERSION}" LittlePup.pkg \
             --title "LittlePup ${NEW_VERSION}" \
-            --notes "## Download
-
-Click **LittlePup.pkg** above to download.
-
-## Install
-
-1. Right-click \`LittlePup.pkg\` → **Open** → **Open** (one-time step to bypass the unsigned-app warning)
-2. Click through the installer — the app lands in \`/Applications\` automatically
-3. Launch LittlePup from Applications or Spotlight
-
-## What's in this build
-
-- Animated golden retriever in your Dock tile
-- Auto-switches between idle and sleep every ~1 minute
-- Right-click Dock menu: Idle, Sit, Sleep, Walk, Feed, Bark
-
-## Requirements
-
-- macOS 12 Monterey or later
-- Apple Silicon or Intel
-
-## Build info
-
-| | |
-|---|---|
-| **Version** | \`${NEW_VERSION}\` |
-| **Commit** | [${{ github.sha }}](${COMMIT_URL}) |
-| **Date** | ${BUILD_DATE} |
-| **Tests** | ${{ steps.tests.outputs.summary }} |"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            --notes-file notes.md
