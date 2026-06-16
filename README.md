@@ -6,7 +6,7 @@ A tiny golden retriever that lives in your macOS Dock — rent free.
 
 ## Download
 
-Go to the [Releases](https://github.com/devyangggg/LittlePup/releases) page and download **LittlePup.zip** from the latest release.
+Go to the [Releases](https://github.com/devyangggg/LittlePup/releases) page and download **LittlePup.pkg** from the latest release.
 
 ---
 
@@ -49,6 +49,10 @@ Right-click the LittlePup icon in your Dock to control the pet manually:
 | **Walk** | Pet walks in place |
 | **Feed** | Plays the eating animation once, then goes back to idle |
 | **Bark** | Plays the bark animation once, then goes back to idle |
+
+## Feeding by drag and drop
+
+Drag a file named **`food.png`** onto the LittlePup icon in the Dock and the pet plays the eating animation automatically. Any other file is ignored.
 
 ---
 

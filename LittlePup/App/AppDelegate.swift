@@ -42,13 +42,28 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
 
     // Modern file-drop hook (macOS 10.13+); called when files are dropped onto the Dock icon
     func application(_ application: NSApplication, open urls: [URL]) {
-        // Step 15: will route through FileDropHandler via PetController
+        // Only react to a file named food.png; any other drop is silently ignored
+        guard urls.contains(where: { $0.lastPathComponent.lowercased() == "food.png" }),
+              let controller = animationController else { return }
+        feedPet(controller: controller)
     }
 
     // Legacy file-drop hook; acts as a safety net for older launch-service paths
     func application(_ sender: NSApplication, openFiles filenames: [String]) {
-        // Step 15: will delegate to the modern path then call replyToOpenOrPrint
+        // Mirror the modern hook: look for food.png in the filename list
+        if filenames.contains(where: { ($0 as NSString).lastPathComponent.lowercased() == "food.png" }),
+           let controller = animationController {
+            feedPet(controller: controller)
+        }
+        // Always reply so Launch Services doesn't hang waiting for a response
         sender.reply(toOpenOrPrint: .success)
+    }
+
+    // Play the eat animation once then return to idle; shared by both drop hooks
+    private func feedPet(controller: AnimationController) {
+        controller.playOnce(.eat) {
+            controller.play(.idle, loop: true, cyclePause: 4.0)
+        }
     }
 
     // MARK: – Step 5 helper (replaced by PetController.start() in Step 9)
