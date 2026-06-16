@@ -1,0 +1,58 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+
+# Allow this workflow to create and delete GitHub releases
+permissions:
+  contents: write
+
+jobs:
+  test-and-release:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install xcodegen
+        run: HOMEBREW_NO_AUTO_UPDATE=1 brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Run tests
+        run: |
+          xcodebuild test \
+            -project LittlePup.xcodeproj \
+            -scheme LittlePupTests \
+            -destination 'platform=macOS'
+
+      - name: Build release app
+        run: |
+          xcodebuild build \
+            -project LittlePup.xcodeproj \
+            -scheme LittlePup \
+            -configuration Release \
+            -derivedDataPath build
+
+      - name: Package as .pkg
+        run: |
+          mkdir -p /tmp/LittlePup-pkg/Applications
+          cp -r build/Build/Products/Release/LittlePup.app /tmp/LittlePup-pkg/Applications/
+          pkgbuild \
+            --root /tmp/LittlePup-pkg \
+            --identifier com.littlepup.app \
+            --version 1.0.0 \
+            --install-location / \
+            LittlePup.pkg
+
+      - name: Publish release
+        run: |
+          SHORT_SHA="${GITHUB_SHA::7}"
+          gh release create "build-${SHORT_SHA}" LittlePup.pkg \
+            --title "LittlePup build-${SHORT_SHA}" \
+            --notes "Auto-built from [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) on $(date -u '+%d %b %Y at %H:%M UTC'). All tests passed."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

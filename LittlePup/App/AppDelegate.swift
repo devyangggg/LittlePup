@@ -10,6 +10,8 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
     private var animationController: AnimationController?
     // Builds the right-click Dock menu; retained here so NSMenuItem.target (which points to it) stays valid
     private var dockMenuBuilder: DockMenuBuilder?
+    // Pending auto-switch timer; held so it can be cancelled on app termination
+    private var autoSwitchTimer: Timer?
 
     // Called once after the run loop starts; all UI setup goes here
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -20,6 +22,8 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
 
     // Called just before the process exits; used for persistence in Step 11
     func applicationWillTerminate(_ notification: Notification) {
+        // Cancel the auto-switch timer so no callbacks fire during teardown
+        autoSwitchTimer?.invalidate()
         // Step 11: will call environment.petController.shutdown() here
     }
 
@@ -84,6 +88,39 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
 
         // Step 7: build the Dock menu and wire each item to the animation controller
         wireDockMenu(controller: controller)
+        // Start automatic idle/sleep alternation; replaced by PetController scheduler in Step 9
+        startAutoSwitch(controller: controller)
+    }
+
+    // MARK: – Auto idle/sleep switcher (replaced by PetController in Step 9)
+
+    // Kick off the first automatic switch; the chain reschedules itself indefinitely
+    private func startAutoSwitch(controller: AnimationController) {
+        // First automatic transition goes to sleep so idle gets some screen time first
+        scheduleNextSwitch(controller: controller, nextState: .sleep)
+    }
+
+    // Schedule one state switch after a random interval; on fire, plays the state and reschedules
+    private func scheduleNextSwitch(controller: AnimationController, nextState: PetState) {
+        // Vary the interval ±15 s around 1 minute so the switches feel organic rather than mechanical
+        let interval = TimeInterval.random(in: 45...75)
+        let t = Timer(timeInterval: interval, repeats: false) { [weak self] _ in
+            MainActor.assumeIsolated {
+                guard let self else { return }
+                if nextState == .sleep {
+                    // Switch to sleep and schedule the return to idle
+                    controller.play(.sleep, loop: true, cyclePause: 3.0)
+                    self.scheduleNextSwitch(controller: controller, nextState: .idle)
+                } else {
+                    // Switch to idle and schedule the next sleep
+                    controller.play(.idle, loop: true, cyclePause: 4.0)
+                    self.scheduleNextSwitch(controller: controller, nextState: .sleep)
+                }
+            }
+        }
+        // .common keeps the timer alive while Dock menus are open
+        RunLoop.main.add(t, forMode: .common)
+        autoSwitchTimer = t
     }
 
     // Create DockMenuBuilder with one closure per menu item; replaced by PetController in Step 9
