@@ -4,11 +4,11 @@
   "spriteSheet": "golden_retriever_sprites.png",
   "frameSize": 200,
   "animations": {
-    "idle":  { "row": 0, "frameCount": 4, "fps": 8.0  },
-    "walk":  { "row": 1, "frameCount": 6, "fps": 10.0 },
+    "idle":  { "row": 0, "frameCount": 4, "fps": 10.0  },
+    "walk":  { "row": 1, "frameCount": 6, "fps": 6.0 },
     "sit":   { "row": 2, "frameCount": 3, "fps": 6.0  },
     "sleep": { "row": 3, "frameCount": 2, "fps": 2.0  },
-    "eat":   { "row": 4, "frameCount": 4, "fps": 8.0  }
+    "eat":   { "row": 4, "frameCount": 4, "fps": 3.0  }
   },
   "behaviors": {
     "idle": {
