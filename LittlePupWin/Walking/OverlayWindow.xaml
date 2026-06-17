@@ -1,0 +1,17 @@
+<Window x:Class="LittlePupWin.Walking.OverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        Title="LittlePup">
+    <Image x:Name="PetImage" Stretch="Uniform"
+           RenderOptions.BitmapScalingMode="NearestNeighbor">
+        <Image.RenderTransform>
+            <ScaleTransform x:Name="FlipTransform" ScaleX="1" CenterX="64" CenterY="64" />
+        </Image.RenderTransform>
+    </Image>
+</Window>
