@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,16 +9,11 @@ namespace LittlePupWin;
 
 public partial class PetWindow : Window
 {
-    private const int GWL_EXSTYLE      = -20;
-    private const int WS_EX_TOOLWINDOW = 0x00000080;  // hides alt-tab ghost while keeping taskbar button
-
-    private static readonly IntPtr HWND_TOPMOST = new(-1);
+    private static readonly IntPtr HWND_TOPMOST  = new(-1);
     private const uint SWP_NOMOVE    = 0x0002;
     private const uint SWP_NOSIZE    = 0x0001;
     private const uint SWP_NOACTIVATE = 0x0010;
 
-    [DllImport("user32.dll")] static extern int  GetWindowLong(IntPtr hwnd, int idx);
-    [DllImport("user32.dll")] static extern int  SetWindowLong(IntPtr hwnd, int idx, int val);
     [DllImport("user32.dll")] static extern bool SetWindowPos(IntPtr hwnd, IntPtr after, int x, int y, int cx, int cy, uint flags);
 
     public ContextMenu? PetContextMenu { get; set; }
@@ -28,13 +22,6 @@ public partial class PetWindow : Window
     {
         InitializeComponent();
         Loaded += (_, _) => ForceAboveTaskbar();
-    }
-
-    protected override void OnClosing(CancelEventArgs e)
-    {
-        base.OnClosing(e);
-        // closing the window (e.g. taskbar right-click → Close Window) quits the app
-        Application.Current.Shutdown();
     }
 
     private void ForceAboveTaskbar()
@@ -48,6 +35,7 @@ public partial class PetWindow : Window
         PetImage.Source      = frame;
         FlipTransform.ScaleX  = flipH ? -1 : 1;
         FlipTransform.CenterX = Width / 2.0;
+        Icon = frame;  // keeps the dog icon in alt-tab and anywhere else Windows shows the app
     }
 
     public void MoveTo(Point origin)
