@@ -33,6 +33,27 @@ jobs:
           COUNT=$(echo "$OUTPUT" | grep -E "Executed [0-9]+ test" | tail -1 | grep -oE "[0-9]+ tests")
           echo "summary=${COUNT}, 0 failures" >> $GITHUB_OUTPUT
 
+      - name: Compute version and stamp into app
+        id: version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Next version = latest semver release tag with the patch bumped (v0.0.0 if none yet)
+          LATEST=$(gh release list \
+            --json tagName \
+            --jq '[.[] | select(.tagName | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$"))] | .[0].tagName // "v0.0.0"')
+          MAJOR=$(echo $LATEST | tr -d 'v' | cut -d. -f1)
+          MINOR=$(echo $LATEST | cut -d. -f2)
+          PATCH=$(echo $LATEST | cut -d. -f3)
+          NEW_VERSION="v${MAJOR}.${MINOR}.$((PATCH + 1))"
+          # Share with the publish step so build and release agree on one version
+          echo "new_version=${NEW_VERSION}" >> "$GITHUB_OUTPUT"
+          # Stamp the bundle BEFORE building so the in-app "Check for Updates" comparison is correct.
+          # INFOPLIST_FILE points at this plist and GENERATE_INFOPLIST_FILE is NO, so this sticks.
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${NEW_VERSION#v}" LittlePup/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ github.run_number }}" LittlePup/Info.plist
+          echo "Stamped version ${NEW_VERSION#v} (build ${{ github.run_number }})"
+
       - name: Build release app
         run: |
           xcodebuild build \
@@ -67,14 +88,9 @@ jobs:
           SERVER_URL: ${{ github.server_url }}
           REPOSITORY: ${{ github.repository }}
           TEST_SUMMARY: ${{ steps.tests.outputs.summary }}
+          NEW_VERSION: ${{ steps.version.outputs.new_version }}
         run: |
-          LATEST=$(gh release list \
-            --json tagName \
-            --jq '[.[] | select(.tagName | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$"))] | .[0].tagName // "v0.0.0"')
-          MAJOR=$(echo $LATEST | tr -d 'v' | cut -d. -f1)
-          MINOR=$(echo $LATEST | cut -d. -f2)
-          PATCH=$(echo $LATEST | cut -d. -f3)
-          NEW_VERSION="v${MAJOR}.${MINOR}.$((PATCH + 1))"
+          # Reuse the version computed (and stamped into the app) before the build
           BUILD_DATE="$(date -u '+%d %b %Y at %H:%M UTC')"
           SHORT_SHA="${FULL_SHA::7}"
           COMMIT_URL="${SERVER_URL}/${REPOSITORY}/commit/${FULL_SHA}"
@@ -97,6 +113,7 @@ jobs:
           - Auto-switches between idle and sleep every ~1 minute
           - Right-click Dock menu: Idle, Sit, Sleep, Walk, Feed, Bark
           - Drop \`food.png\` onto the Dock icon to trigger the eating animation
+          - **Check for Updates…** in the Dock menu — get notified when a new version ships
 
           ## Requirements
 

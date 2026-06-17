@@ -12,6 +12,8 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
     private var petProfile: PetProfile?
     // Builds the right-click Dock menu; retained here so NSMenuItem.target (which points to it) stays valid
     private var dockMenuBuilder: DockMenuBuilder?
+    // Performs the manual "Check for Updates…" action; retained so menu closures stay valid
+    private var updateChecker: UpdateChecker?
     // Pending 3-minute cycle timer; cancelled on termination
     private var autoSwitchTimer: Timer?
     // Pending run-duration timer; fires when a timed run finishes to pick the next state
@@ -195,6 +197,9 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
 
     // Create DockMenuBuilder with one closure per menu item; replaced by PetController in Step 9
     private func wireDockMenu(controller: AnimationController, profile: PetProfile) {
+        // Create and retain the update checker; the checkUpdates closure captures it
+        let checker = UpdateChecker()
+        updateChecker = checker
         // Each closure captures controller with a strong reference; controller is already retained
         // by animationController above, so this adds no ownership cycle
         let actions = DockMenuActions(
@@ -225,6 +230,10 @@ import AppKit // NSApplicationDelegate protocol is part of AppKit
                 controller.playOnce(.bark) {
                     controller.play(.idle, loop: true, cyclePause: 4.0)
                 }
+            },
+            checkUpdates: {
+                // Query GitHub for a newer release and, if found, offer to download the DMG
+                checker.check()
             }
         )
         // Build and retain the builder; NSMenuItem.target points at it, so it must outlive the menu

@@ -17,6 +17,8 @@ struct DockMenuActions {
     let feed: () -> Void
     // Play bark once, then return to idle
     let bark: () -> Void
+    // Check GitHub for a newer release and offer to download it
+    let checkUpdates: () -> Void
 }
 
 // Builds the right-click Dock menu from DockMenuActions closures.
@@ -54,6 +56,10 @@ struct DockMenuActions {
         menu.addItem(.separator())
         menu.addItem(makeItem(title: "Feed",  closure: actions.feed))
         menu.addItem(makeItem(title: "Bark",  closure: actions.bark))
+        // Separator before the app-level action
+        menu.addItem(.separator())
+        // Check GitHub for a newer release
+        menu.addItem(makeItem(title: "Check for Updates…", closure: actions.checkUpdates))
         return menu
     }
 

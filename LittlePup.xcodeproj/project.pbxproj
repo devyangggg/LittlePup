@@ -26,6 +26,7 @@
 		DC275DE901BEF297F1344B24 /* SpriteSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0E32B176D2CC7CE4D8C9A5 /* SpriteSheet.swift */; };
 		DC3633E7F972214AB58A562F /* Pets in Resources */ = {isa = PBXBuildFile; fileRef = 5D9711C1552DB9CC97F4A096 /* Pets */; };
 		DCE99B0BB8125F42B836E433 /* ProfileError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73BEF762B79AD85004D7BCA /* ProfileError.swift */; };
+		E978689E18C79443A4BD385D /* UpdateChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844EE6A9AE5F86FDF9F1D385 /* UpdateChecker.swift */; };
 		F6CB59574F1759E1D0FD6FEE /* LittlePupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF141BDD540D84B57C86069 /* LittlePupTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +53,7 @@
 		5D9711C1552DB9CC97F4A096 /* Pets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Pets; path = LittlePup/Resources/Pets; sourceTree = SOURCE_ROOT; };
 		6F7EB72464DAA3B07B1CA150 /* LittlePup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LittlePup.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82C10E02E5307F60EF8F4ABF /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		844EE6A9AE5F86FDF9F1D385 /* UpdateChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateChecker.swift; sourceTree = "<group>"; };
 		8C52F9DC0C66FF58CE5C0282 /* FrameClock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameClock.swift; sourceTree = "<group>"; };
 		9F916D8AD8704ED3386BA10E /* PetState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetState.swift; sourceTree = "<group>"; };
 		A1E6EC2AB4588D1B70CFA1AC /* BehaviorConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviorConfig.swift; sourceTree = "<group>"; };
@@ -82,6 +84,14 @@
 				4D0E32B176D2CC7CE4D8C9A5 /* SpriteSheet.swift */,
 			);
 			path = Animation;
+			sourceTree = "<group>";
+		};
+		377B932A8E5F2B9FF5CD068A /* Update */ = {
+			isa = PBXGroup;
+			children = (
+				844EE6A9AE5F86FDF9F1D385 /* UpdateChecker.swift */,
+			);
+			path = Update;
 			sourceTree = "<group>";
 		};
 		3AD4A5A5FF100A71D5F15263 = {
@@ -133,6 +143,7 @@
 				DF5B10602A164B739D154812 /* Menu */,
 				60BCA9AC8377B67CA3E675CA /* Profile */,
 				13F3212F725951343C5E23B4 /* Resources */,
+				377B932A8E5F2B9FF5CD068A /* Update */,
 			);
 			path = LittlePup;
 			sourceTree = "<group>";
@@ -288,6 +299,7 @@
 				236AEDB1D69CB5C05FFB80B3 /* PetState.swift in Sources */,
 				DCE99B0BB8125F42B836E433 /* ProfileError.swift in Sources */,
 				DC275DE901BEF297F1344B24 /* SpriteSheet.swift in Sources */,
+				E978689E18C79443A4BD385D /* UpdateChecker.swift in Sources */,
 				A069D9B0D610AEFB744F894D /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

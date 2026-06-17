@@ -49,6 +49,7 @@ Right-click the LittlePup icon in your Dock to control the pet manually:
 | **Walk** | Pet walks in place |
 | **Feed** | Plays the eating animation once, then goes back to idle |
 | **Bark** | Plays the bark animation once, then goes back to idle |
+| **Check for Updates…** | Checks GitHub for a newer release; if one exists, offers to download it |
 
 ## Feeding by drag and drop
 
