@@ -9,6 +9,8 @@
     <AssemblyName>LittlePup</AssemblyName>
     <RootNamespace>LittlePup</RootNamespace>
     <Version>0.1.0</Version>
+    <!-- Same art as the macOS app icon (generated from Assets.xcassets via windows/tools/make-icon.ps1) -->
+    <ApplicationIcon>app.ico</ApplicationIcon>
     <!-- Single-file / self-contained flags are supplied by the publish command (see windows.yml) -->
   </PropertyGroup>
 
