@@ -5,7 +5,7 @@
         AllowsTransparency="True"
         Background="Transparent"
         Topmost="True"
-        ShowInTaskbar="False"
+        ShowInTaskbar="True"
         ResizeMode="NoResize"
         Title="LittlePup">
     <Image x:Name="PetImage"
