@@ -1,28 +1,41 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media.Imaging;
 
 namespace LittlePupWin;
 
 public partial class PetWindow : Window
 {
-    public ContextMenu? PetContextMenu { get; set; }
+    private ContextMenu? _petContextMenu;
+
+    public ContextMenu? PetContextMenu
+    {
+        get => _petContextMenu;
+        set
+        {
+            _petContextMenu = value;
+            if (value != null)
+                // after every menu dismissal, minimize so next taskbar click re-fires OnActivated
+                value.Closed += (_, _) => WindowState = WindowState.Minimized;
+        }
+    }
 
     public PetWindow()
     {
         InitializeComponent();
-        // park the 1×1 invisible window off the visible desktop
-        Left = -10;
-        Top  = -10;
+        Left        = -10;
+        Top         = -10;
+        WindowState = WindowState.Minimized;  // start minimized; taskbar button still shows
     }
 
     protected override void OnActivated(EventArgs e)
     {
         base.OnActivated(e);
-        // user clicked the taskbar button → show the control menu
+        WindowState = WindowState.Normal;  // un-minimize so we can show the menu
         if (PetContextMenu is null) return;
-        PetContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
+        PetContextMenu.Placement = PlacementMode.MousePoint;
         PetContextMenu.IsOpen    = true;
     }
 
@@ -32,10 +45,8 @@ public partial class PetWindow : Window
         Application.Current.Shutdown();
     }
 
-    // animates the taskbar button icon — the only visible dog
     public void SetFrame(BitmapSource frame, bool flipH) => Icon = frame;
 
-    // still called by PetController during walk; harmless on a hidden 1×1 window
     public void MoveTo(Point origin) { Left = origin.X; Top = origin.Y; }
     public void SizeTo(int pixels)   { }
 }
