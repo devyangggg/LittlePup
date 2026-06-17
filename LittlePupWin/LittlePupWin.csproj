@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>LittlePupWin</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <PlatformTarget>x64</PlatformTarget>
+    <AssemblyName>LittlePupWin</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Pets\golden_retriever_sprites.png" />
+    <Resource Include="Resources\Pets\golden_retriever.json" />
+  </ItemGroup>
+</Project>
