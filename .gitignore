@@ -1,0 +1,12 @@
+# Xcode / macOS
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+
+# .NET / Windows
+LittlePupWin/bin/
+LittlePupWin/obj/
+LittlePupWin/publish/
+*.user

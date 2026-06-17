@@ -2,7 +2,7 @@ name: CI/CD
 
 on:
   push:
-    branches: [main]
+    branches: [main, windows-native]
 
 # Allow this workflow to create and delete GitHub releases
 permissions:
@@ -105,3 +105,29 @@ jobs:
           gh release create "${NEW_VERSION}" LittlePup.pkg \
             --title "LittlePup ${NEW_VERSION}" \
             --notes-file notes.md
+
+  windows-build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build Windows app
+        run: dotnet build LittlePupWin/LittlePupWin.csproj --configuration Release
+        working-directory: LittlePup
+
+      - name: Publish Windows exe
+        run: dotnet publish LittlePupWin/LittlePupWin.csproj -c Release -r win-x64 --self-contained true -o publish/win
+        working-directory: LittlePup
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LittlePupWin
+          path: LittlePup/publish/win/LittlePupWin.exe
