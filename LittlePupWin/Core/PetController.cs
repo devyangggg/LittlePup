@@ -15,7 +15,7 @@ public class PetController : IAnimationDelegate, IBehaviorSchedulerDelegate
     private readonly AnimationController _animation;
     private readonly BehaviorScheduler   _scheduler;
     private readonly WalkPathController  _walkPath;
-    private readonly OverlayWindow       _window;
+    private readonly PetWindow           _window;
     private readonly PetRenderer         _renderer;
     private readonly FileDropHandler     _dropHandler;
     private readonly StateStore          _store;
@@ -28,7 +28,7 @@ public class PetController : IAnimationDelegate, IBehaviorSchedulerDelegate
 
     public PetController(
         PetProfile profile, AnimationController animation, BehaviorScheduler scheduler,
-        WalkPathController walkPath, OverlayWindow window, PetRenderer renderer,
+        WalkPathController walkPath, PetWindow window, PetRenderer renderer,
         FileDropHandler dropHandler, StateStore store)
     {
         _profile     = profile;
@@ -65,7 +65,6 @@ public class PetController : IAnimationDelegate, IBehaviorSchedulerDelegate
         _store.Save(new PersistedState(safe, _profile.Id));
     }
 
-    // Tray menu overrides
     public void UserRequestedIdle()  => ManualOverride(PetState.Idle);
     public void UserRequestedSit()   => ManualOverride(PetState.Sit);
     public void UserRequestedSleep() => ManualOverride(PetState.Sleep);
@@ -88,21 +87,18 @@ public class PetController : IAnimationDelegate, IBehaviorSchedulerDelegate
 
     public void HandleDroppedFiles(IEnumerable<string> paths)
     {
-        var result = _dropHandler.HandleDrop(paths);
-        if (result.DidEat) UserRequestedFeed();
+        if (_dropHandler.HandleDrop(paths).DidEat) UserRequestedFeed();
     }
 
-    // IBehaviorSchedulerDelegate
     public void SchedulerWantsTransition(BehaviorScheduler scheduler, PetState state, TimeSpan duration)
     {
-        if (state.IsMoving()) scheduler.Pause(); // resume after walk finishes
+        if (state.IsMoving()) scheduler.Pause();
         Enter(new StateTransition(state, TransitionSource.Scheduler, duration));
     }
 
-    // IAnimationDelegate
     public void AnimationDidCompleteCycle(PetState state) { }
 
-    // ─── private ───────────────────────────────────────────────────────────
+    // ─── private ──────────────────────────────────────────────────────────
 
     private void ManualOverride(PetState state)
     {
@@ -183,8 +179,8 @@ public class PetController : IAnimationDelegate, IBehaviorSchedulerDelegate
     private void WalkTick(object? sender, EventArgs e)
     {
         if (_currentPlan is not { } plan) return;
-        double elapsed  = (DateTime.UtcNow - _walkStart).TotalSeconds;
-        double progress = Math.Min(elapsed / plan.DurationSeconds, 1.0);
+        double progress = Math.Min(
+            (DateTime.UtcNow - _walkStart).TotalSeconds / plan.DurationSeconds, 1.0);
         _window.MoveTo(plan.OriginAtProgress(progress));
 
         if (progress >= 1.0)
@@ -205,10 +201,9 @@ public class PetController : IAnimationDelegate, IBehaviorSchedulerDelegate
 
     private void PlaceAtHome()
     {
-        double screenW = SystemParameters.PrimaryScreenWidth;
-        double screenH = SystemParameters.PrimaryScreenHeight;
-        double x = (screenW - _profile.FrameSize) / 2;
-        double y = screenH - _profile.FrameSize;   // feet sit on the taskbar
+        var area = SystemParameters.WorkArea;
+        double x = area.Left + (area.Width - _profile.FrameSize) / 2;
+        double y = area.Bottom - _profile.FrameSize;   // just above the taskbar
         _window.MoveTo(new Point(x, y));
         _window.SizeTo(_profile.FrameSize);
     }

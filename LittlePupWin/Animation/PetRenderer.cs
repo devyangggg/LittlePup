@@ -1,9 +1,8 @@
 using System.Windows.Media.Imaging;
-using LittlePupWin.Walking;
 
 namespace LittlePupWin.Animation;
 
-public class PetRenderer(OverlayWindow window)
+public class PetRenderer(PetWindow window)
 {
     public void Render(BitmapSource frame, bool flipH = false) =>
         window.SetFrame(frame, flipH);

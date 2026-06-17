@@ -1,9 +1,9 @@
 using System.Windows;
+using System.Windows.Controls;
 using LittlePupWin.Animation;
 using LittlePupWin.Behavior;
 using LittlePupWin.Core;
 using LittlePupWin.DragDrop;
-using LittlePupWin.Menu;
 using LittlePupWin.Persistence;
 using LittlePupWin.Profile;
 using LittlePupWin.Walking;
@@ -13,9 +13,8 @@ namespace LittlePupWin;
 
 public class AppEnvironment : IDisposable
 {
-    private readonly OverlayWindow    _overlay;
-    private readonly TrayMenuBuilder  _tray;
-    private readonly PetController    _controller;
+    private readonly PetWindow     _window;
+    private readonly PetController _controller;
 
     public AppEnvironment()
     {
@@ -23,11 +22,11 @@ public class AppEnvironment : IDisposable
         var profile = loader.LoadDefault();
 
         var sheet   = SpriteSheet.Load(profile.SpriteSheet, profile.FrameSize);
-        _overlay    = new OverlayWindow();
-        _overlay.SizeTo(profile.FrameSize);
+        _window     = new PetWindow();
+        _window.SizeTo(profile.FrameSize);
 
         var clock      = new FrameClock();
-        var renderer   = new PetRenderer(_overlay);
+        var renderer   = new PetRenderer(_window);
         var animation  = new AnimationController(sheet, profile, clock, renderer);
         var scheduler  = new BehaviorScheduler(profile);
         var walkPath   = new WalkPathController();
@@ -36,24 +35,39 @@ public class AppEnvironment : IDisposable
 
         _controller = new PetController(
             profile, animation, scheduler, walkPath,
-            _overlay, renderer, drop, store);
+            _window, renderer, drop, store);
 
-        var actions = new TrayMenuActions(
-            OnIdle:        () => _controller.UserRequestedIdle(),
-            OnSit:         () => _controller.UserRequestedSit(),
-            OnSleep:       () => _controller.UserRequestedSleep(),
-            OnWalk:        () => _controller.UserRequestedWalk(),
-            OnRun:         () => _controller.UserRequestedRun(),
-            OnFeed:        () => _controller.UserRequestedFeed(),
-            OnBark:        () => _controller.UserRequestedBark(),
-            OnFeedFromFile: FeedFromFile,
-            OnQuit:        QuitApp
-        );
-        _tray = new TrayMenuBuilder(actions);
+        _window.PetContextMenu = BuildMenu();
     }
 
-    public void Start()  => _controller.Start();
+    public void Start()    => _controller.Start();
     public void Shutdown() => _controller.Shutdown();
+
+    private ContextMenu BuildMenu()
+    {
+        var menu = new ContextMenu();
+
+        void Add(string header, Action action)
+        {
+            var item = new MenuItem { Header = header };
+            item.Click += (_, _) => action();
+            menu.Items.Add(item);
+        }
+
+        Add("Idle",  () => _controller.UserRequestedIdle());
+        Add("Sit",   () => _controller.UserRequestedSit());
+        Add("Sleep", () => _controller.UserRequestedSleep());
+        Add("Walk",  () => _controller.UserRequestedWalk());
+        Add("Run",   () => _controller.UserRequestedRun());
+        menu.Items.Add(new Separator());
+        Add("Feed",             () => _controller.UserRequestedFeed());
+        Add("Bark",             () => _controller.UserRequestedBark());
+        Add("Feed from file…",  FeedFromFile);
+        menu.Items.Add(new Separator());
+        Add("Quit", () => Application.Current.Shutdown());
+
+        return menu;
+    }
 
     private void FeedFromFile()
     {
@@ -66,14 +80,5 @@ public class AppEnvironment : IDisposable
             _controller.HandleDroppedFiles([dlg.FileName]);
     }
 
-    private static void QuitApp()
-    {
-        Application.Current.Dispatcher.Invoke(() => Application.Current.Shutdown());
-    }
-
-    public void Dispose()
-    {
-        _tray.Dispose();
-        _overlay.Close();
-    }
+    public void Dispose() => _window.Close();
 }

@@ -15,17 +15,12 @@ public class WalkPathController
 {
     public WalkPlan MakePath(int frameSize, double durationSeconds)
     {
-        double screenW = SystemParameters.PrimaryScreenWidth;
-        double screenH = SystemParameters.PrimaryScreenHeight;
-        double y       = screenH - frameSize;   // walk along the taskbar
-        bool   goLeft  = Random.Shared.NextDouble() < 0.5;
+        var area   = SystemParameters.WorkArea;
+        double y   = area.Bottom - frameSize;   // walk just above the taskbar
+        bool goLeft = Random.Shared.NextDouble() < 0.5;
 
-        Point start = goLeft
-            ? new Point(screenW - frameSize, y)
-            : new Point(0, y);
-        Point end = goLeft
-            ? new Point(0, y)
-            : new Point(screenW - frameSize, y);
+        Point start = goLeft ? new Point(area.Right - frameSize, y) : new Point(area.Left, y);
+        Point end   = goLeft ? new Point(area.Left, y) : new Point(area.Right - frameSize, y);
 
         return new WalkPlan(start, end, goLeft, durationSeconds);
     }
