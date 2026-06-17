@@ -21,6 +21,12 @@ xcuserdata/
 .build/
 .swiftpm/
 
+# .NET (Windows app) build output
+windows/**/bin/
+windows/**/obj/
+publish/
+*.exe
+
 # Distribution artifacts (built locally, uploaded via CI — not committed)
 *.pkg
 *.zip

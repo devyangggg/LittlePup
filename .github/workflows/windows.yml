@@ -1,0 +1,70 @@
+name: Windows
+
+# Independent of the macOS ci.yml. Only runs when the Windows app (or this workflow) changes,
+# so macOS-only commits never trigger a Windows build.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'windows/**'
+      - '.github/workflows/windows.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Compute version
+        id: version
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Patch-bump from the current rolling release's name; fall back to 0.1.0 if absent/invalid.
+          CUR=$(gh release view win-latest --json name --jq '.name' 2>/dev/null || echo "")
+          if ! echo "$CUR" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then CUR="0.1.0"; fi
+          MAJOR=$(echo "$CUR" | cut -d. -f1)
+          MINOR=$(echo "$CUR" | cut -d. -f2)
+          PATCH=$(echo "$CUR" | cut -d. -f3)
+          NEW="${MAJOR}.${MINOR}.$((PATCH + 1))"
+          echo "ver=$NEW" >> "$GITHUB_OUTPUT"
+          echo "Building LittlePup for Windows $NEW"
+
+      - name: Publish single-file exe
+        shell: bash
+        run: |
+          dotnet publish windows/LittlePup/LittlePup.csproj \
+            -c Release -r win-x64 --self-contained true \
+            -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
+            -p:Version=${{ steps.version.outputs.ver }} \
+            -o publish
+
+      - name: Publish rolling pre-release (stable download link)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Recreate the rolling release so the permanent asset URL stays:
+          #   https://github.com/${{ github.repository }}/releases/download/win-latest/LittlePup.exe
+          # --prerelease keeps it OUT of releases/latest, so the macOS DMG link/updater are untouched.
+          gh release delete win-latest --yes --cleanup-tag 2>/dev/null || true
+          gh release create win-latest "publish/LittlePup.exe" \
+            --prerelease \
+            --title "${{ steps.version.outputs.ver }}" \
+            --notes "LittlePup for Windows ${{ steps.version.outputs.ver }}.
+
+          **Install:** download \`LittlePup.exe\` and double-click it — that's it (no installer, no .NET needed). The pet lives on your taskbar; right-click its icon for the menu (Idle / Sit / Sleep / Walk / Feed / Bark / Check for Updates / Quit).
+
+          **First run:** Windows SmartScreen may warn because the app isn't signed with a paid certificate. Click **More info → Run anyway**."

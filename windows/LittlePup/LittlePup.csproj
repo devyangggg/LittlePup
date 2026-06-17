@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>LittlePup</AssemblyName>
+    <RootNamespace>LittlePup</RootNamespace>
+    <Version>0.1.0</Version>
+    <!-- Single-file / self-contained flags are supplied by the publish command (see windows.yml) -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- System.Drawing is used for sprite slicing and HICON generation (Windows-only, fine for net8.0-windows) -->
+    <PackageReference Include="System.Drawing.Common" Version="8.0.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Single source of truth: the same pet assets the macOS app ships, embedded into the exe -->
+    <EmbeddedResource Include="..\..\LittlePup\Resources\Pets\golden_retriever.json" LogicalName="Pets/golden_retriever.json" />
+    <EmbeddedResource Include="..\..\LittlePup\Resources\Pets\golden_retriever_sprites.png" LogicalName="Pets/golden_retriever_sprites.png" />
+  </ItemGroup>
+
+</Project>
