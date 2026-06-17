@@ -6,21 +6,21 @@ A tiny golden retriever that lives in your macOS Dock — rent free.
 
 ## Download
 
-Go to the [Releases](https://github.com/devyangggg/LittlePup/releases) page and download **LittlePup.pkg** from the latest release.
+Go to the [Releases](https://github.com/devyangggg/LittlePup/releases) page and download **LittlePup.dmg** from the latest release.
 
 ---
 
 ## Install
 
-1. Download **LittlePup.pkg** and double-click it
-2. Click through the installer — it puts the app in your Applications folder automatically
+1. Open **LittlePup.dmg**
+2. **Drag `LittlePup.app` onto the Applications folder** shown in the window
 3. Open LittlePup from Applications or Spotlight
 
-**First launch only** — macOS will block it because the app isn't signed with a paid Apple certificate. To get past this:
+**First launch only** — macOS will block it because the app isn't signed with a paid Apple certificate. To get past this, do **one** of the following:
 
-**Option A (easiest):** Right-click `LittlePup.pkg` → click **Open** → click **Open** in the popup, then run through the installer
+**Option A (easiest):** In Applications, right-click `LittlePup` → click **Open** → click **Open** in the popup. macOS remembers this and opens it normally from then on.
 
-**Option B (Terminal):** Run this once after installing, then open normally:
+**Option B (Terminal):** Run this once, then open normally:
 ```bash
 xattr -dr com.apple.quarantine /Applications/LittlePup.app
 ```

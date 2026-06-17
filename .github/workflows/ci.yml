@@ -41,16 +41,24 @@ jobs:
             -configuration Release \
             -derivedDataPath build
 
-      - name: Package as .pkg
+      - name: Package as .dmg
         run: |
-          mkdir -p /tmp/LittlePup-pkg/Applications
-          cp -r build/Build/Products/Release/LittlePup.app /tmp/LittlePup-pkg/Applications/
-          pkgbuild \
-            --root /tmp/LittlePup-pkg \
-            --identifier com.littlepup.app \
-            --version 1.0.0 \
-            --install-location / \
-            LittlePup.pkg
+          STAGE=/tmp/LittlePup-dmg
+          rm -rf "$STAGE" && mkdir -p "$STAGE"
+          # clean copy of the app — no resource forks / extended attrs / ACLs
+          ditto --norsrc --noextattr --noacl \
+            build/Build/Products/Release/LittlePup.app "$STAGE/LittlePup.app"
+          xattr -cr "$STAGE/LittlePup.app"
+          # drag-to-install target inside the disk image
+          ln -s /Applications "$STAGE/Applications"
+          # compressed read-only image
+          hdiutil create \
+            -volname "LittlePup" \
+            -srcfolder "$STAGE" \
+            -ov \
+            -format UDZO \
+            -fs HFS+ \
+            LittlePup.dmg
 
       - name: Publish release
         env:
@@ -73,13 +81,15 @@ jobs:
           cat > notes.md << NOTES
           ## Download
 
-          Click **LittlePup.pkg** above to download.
+          Click **LittlePup.dmg** above to download.
 
           ## Install
 
-          1. Right-click \`LittlePup.pkg\` → **Open** → **Open** (one-time step to bypass the unsigned-app warning)
-          2. Click through the installer — the app lands in \`/Applications\` automatically
+          1. Open \`LittlePup.dmg\`
+          2. **Drag \`LittlePup.app\` onto the Applications folder** in the window
           3. Launch LittlePup from Applications or Spotlight
+
+          **First launch only:** right-click \`LittlePup\` in Applications → **Open** → **Open** to bypass the unsigned-app warning (macOS remembers it after that). Or run once: \`xattr -dr com.apple.quarantine /Applications/LittlePup.app\`
 
           ## What's in this build
 
@@ -102,6 +112,6 @@ jobs:
           | **Date** | ${BUILD_DATE} |
           | **Tests** | ${TEST_SUMMARY} |
           NOTES
-          gh release create "${NEW_VERSION}" LittlePup.pkg \
+          gh release create "${NEW_VERSION}" LittlePup.dmg \
             --title "LittlePup ${NEW_VERSION}" \
             --notes-file notes.md

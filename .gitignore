@@ -5,6 +5,7 @@
 
 # Xcode build output
 build/
+dist_build/
 DerivedData/
 *.xcuserstate
 xcuserdata/
@@ -23,6 +24,7 @@ xcuserdata/
 # Distribution artifacts (built locally, uploaded via CI — not committed)
 *.pkg
 *.zip
+*.dmg
 
 # Environment / secrets (belt-and-suspenders)
 .env
