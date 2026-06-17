@@ -14,16 +14,36 @@
   so the macOS DMG link/updater are unaffected).
 - Latest CI build succeeded; current Windows version: see the `win-latest` release name.
 
-## What still needs real testing on Windows (couldn't be done on the Mac)
-1. **Build locally:** `cd windows && dotnet build LittlePup.Windows.sln -c Release` (needs .NET 8 SDK).
-2. **Run it:** launch `LittlePup.exe` → a taskbar button with the golden-retriever icon should
-   appear and **animate** (idle blink loop). No visible window. ← *human eyeball needed.*
+## Test results (2026-06-17, Windows 11, self-contained publish build)
+Verified on a real Windows box. **All programmatically-checkable items pass; visual items still need a human eyeball.**
+
+- ✅ **Builds clean:** `dotnet build … -c Release` and the self-contained single-file `dotnet publish`
+  both succeed with **0 warnings / 0 errors** (.NET SDK 8.0.422, installed per-user via dot.net script).
+- ✅ **Launches & stays alive:** taskbar window (HWND) is created and the process survives idle.
+- ✅ **Single-instance forwarding:** with the pet running, `LittlePup.exe --action=<cmd>` forwards over
+  the named pipe and the forwarder **exits cleanly (code 0)** — instance count stays at **1**, no second
+  taskbar button. Exercised idle/sit/sleep/walk/feed/bark in a row; pet stayed single & alive.
+- ✅ **Quit:** `--action=quit` exits all instances cleanly.
+- ✅ **No GDI/handle leak:** handle count stayed flat (~683→~692, oscillating, no upward trend) across
+  many icon swaps + actions. `IconRenderer.SetIcon` correctly `DestroyIcon`s the prior frame's HICONs.
+- ✅ **Action wiring matches:** JumpListBuilder emits idle/sit/sleep/walk/feed/bark/update/quit and
+  `PetController.HandleAction` routes exactly those.
+
+### ⚠️ Environment gotcha discovered
+A framework-dependent (`dotnet build`) LittlePup.exe needs the **WPF Desktop runtime** installed
+machine-wide. A partial `winget install Microsoft.DotNet.SDK.8` (cancelled at the UAC prompt under
+`--disable-interactivity`, exit 1602) left only the **base** .NET runtime, so the build-output exe
+crashed *intermittently* with "You must install or update .NET to run this application." **The shipping
+artifact is the self-contained single-file publish, which has no external runtime dependency and is
+unaffected** — always test/ship that one, not `bin\…\LittlePup.exe`.
+
+## Still needs a human eyeball (can't be verified headless)
+2. **Run it:** launch `publish\LittlePup.exe` → a taskbar button with the golden-retriever icon should
+   appear and **animate** (idle blink loop). No visible window. ← *human eyeball needed.* (one is running now.)
 3. **Jump List menu:** right-click the taskbar icon → Idle/Sit/Sleep/Walk/Feed/Bark/Check for
-   Updates/Quit. Each should change state; Quit exits. ← *human eyeball needed.*
-4. **Single-instance forwarding:** with it running, `LittlePup.exe --action=sit` should change the
-   running pet (NOT open a second taskbar button).
-5. **Watch for:** taskbar icon throttling/flicker (Windows may rate-limit icon redraws), Jump List
-   actually showing our items, no GDI handle leak over time.
+   Updates/Quit. Each should visibly change state. ← *human eyeball needed.*
+5. **Watch for:** taskbar icon throttling/flicker (Windows may rate-limit icon redraws), the Jump List
+   actually showing our 8 items, and the `update` ("Check for Updates") network path.
 
 ## Key commands
 ```powershell
