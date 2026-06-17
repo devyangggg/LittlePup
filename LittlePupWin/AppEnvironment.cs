@@ -23,7 +23,6 @@ public class AppEnvironment : IDisposable
 
         var sheet   = SpriteSheet.Load(profile.SpriteSheet, profile.FrameSize);
         _window     = new PetWindow();
-        _window.SizeTo(profile.FrameSize);
 
         var clock      = new FrameClock();
         var renderer   = new PetRenderer(_window);

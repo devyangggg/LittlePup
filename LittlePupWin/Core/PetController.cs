@@ -201,10 +201,10 @@ public class PetController : IAnimationDelegate, IBehaviorSchedulerDelegate
 
     private void PlaceAtHome()
     {
-        var area = SystemParameters.WorkArea;
-        double x = area.Left + (area.Width - _profile.FrameSize) / 2;
-        double y = area.Bottom - _profile.FrameSize;   // just above the taskbar
-        _window.MoveTo(new Point(x, y));
-        _window.SizeTo(_profile.FrameSize);
+        double taskbarH   = SystemParameters.PrimaryScreenHeight - SystemParameters.WorkArea.Bottom;
+        double taskbarTop = SystemParameters.WorkArea.Bottom;
+        double x = (SystemParameters.PrimaryScreenWidth - taskbarH) / 2;
+        _window.MoveTo(new Point(x, taskbarTop));
+        _window.SizeTo((int)taskbarH);
     }
 }
