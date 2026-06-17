@@ -4,16 +4,7 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
-        Topmost="True"
         ShowInTaskbar="True"
         ResizeMode="NoResize"
-        Title="LittlePup">
-    <Image x:Name="PetImage"
-           Stretch="Uniform"
-           RenderOptions.BitmapScalingMode="NearestNeighbor"
-           MouseRightButtonUp="OnRightClick">
-        <Image.RenderTransform>
-            <ScaleTransform x:Name="FlipTransform" ScaleX="1" />
-        </Image.RenderTransform>
-    </Image>
-</Window>
+        Title="LittlePup"
+        Width="1" Height="1" />
